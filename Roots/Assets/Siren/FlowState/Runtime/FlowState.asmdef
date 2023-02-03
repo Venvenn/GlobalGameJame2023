@@ -1,0 +1,16 @@
+{
+    "name": "com.unity.FlowState.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:09ae4ef49d9ed9e49941c725081a9b07"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

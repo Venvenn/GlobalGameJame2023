@@ -1,0 +1,11 @@
+{
+    "name": "com.siren.flowstate",
+    "displayName": "Flowstate",
+    "version": "0.1.1",
+    "unity": "2019.2",
+    "description": "A state machine that allows for simple management of game state flow",
+    "keywords": [ "siren","flowstate","state","flow" ],
+    "dependencies": {
+        "com.siren.core": "0.1.1"
+    }
+  }
