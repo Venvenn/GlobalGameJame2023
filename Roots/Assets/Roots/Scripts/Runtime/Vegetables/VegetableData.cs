@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public struct VegetableData
 {
-    public float GrowingTime;
+    public int GrowingTime;
     public int BaseValue;
     public int SeedValue;
     public int MaxHealth;

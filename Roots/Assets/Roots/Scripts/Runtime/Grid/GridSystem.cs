@@ -8,9 +8,10 @@ public class GridSystem
     private const string k_floorLayer = "Floor";
 
     private SquareGridComponent _gridComponent;
-    private Dictionary<int2,GridData> _entities;
     private Camera _camera;
 
+    public Dictionary<int2,GridData> Entities;
+    
     public int2 Size => _gridComponent.Size;
 
     public GridSystem(SquareGridComponent gridComponent, Camera camera)
@@ -20,14 +21,14 @@ public class GridSystem
 
         _camera = camera;
         
-        _entities = new Dictionary<int2, GridData>();
+        Entities = new Dictionary<int2, GridData>();
     }
 
     public void AddEntityToGrid(GridData data, int2 gridPos)
     {
         if (CellValid(gridPos) && !HasEntity(gridPos))
         {
-            _entities.Add(gridPos, data);
+            Entities.Add(gridPos, data);
         }
     }
     
@@ -35,8 +36,8 @@ public class GridSystem
     {
         if (CellValid(gridPos) && HasEntity(gridPos))
         {
-            Object.Destroy(_entities[gridPos].GridObject);
-            _entities.Remove(gridPos);
+            Object.Destroy(Entities[gridPos].GridObject);
+            Entities.Remove(gridPos);
         }
     }
 
@@ -64,7 +65,7 @@ public class GridSystem
     
     public bool HasEntity(int2 cellPos)
     {
-        return _entities.ContainsKey(cellPos);
+        return Entities.ContainsKey(cellPos);
     }
     
     public float3 GetWorldPosition(int2 cellPos)
@@ -79,7 +80,7 @@ public class GridSystem
 
     public int2 GetCellPositionFromEntity(int id)
     {
-        foreach (var entity in _entities)
+        foreach (var entity in Entities)
         {
             if (entity.Value.TypeId == id)
             {
@@ -94,6 +95,11 @@ public class GridSystem
         _gridComponent.SelectCell(cellPos);
     }
     
+    public void SelectAndColourCell(int2 cellPos, Color colour)
+    {
+        _gridComponent.SelectAndColourCell(cellPos, colour);
+    }
+    
     public void DeselectCell(int2 cellPos)
     {
         _gridComponent.DeselectCell(cellPos);
@@ -101,9 +107,9 @@ public class GridSystem
 
     public bool GetEntity(int2 gridPos, out GridData gridData)
     {
-        if (_entities.ContainsKey(gridPos))
+        if (Entities.ContainsKey(gridPos))
         {
-            gridData =_entities[gridPos];
+            gridData =Entities[gridPos];
             return true;
         }
 

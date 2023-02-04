@@ -54,6 +54,10 @@ public class SquareGridComponent : MonoBehaviour
     {
         if (CellValid(cellPos))
         {
+            if (m_selectedCells.ContainsKey(cellPos))
+            {
+                DeselectCell(cellPos);
+            }
             m_selectedCells.Add(cellPos, colour);
         }
     }

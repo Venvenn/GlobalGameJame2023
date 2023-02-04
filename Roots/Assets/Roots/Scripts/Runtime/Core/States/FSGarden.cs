@@ -7,10 +7,12 @@ public class FSGarden : FlowState
 {
     private GardenUI _ui;
     private UIManager _uiManager;
-    private GridSystem _gridSystem;
     private Camera _camera;
 
     private AllVegetables _allVegetables;
+    
+    private GridSystem _gridSystem;
+    private VegetableSystem _vegetableSystem;
     
     //temp data
     private int _selectedType = -1;
@@ -24,9 +26,10 @@ public class FSGarden : FlowState
         //Camera
         _camera = Camera.main;
         
-        //Grid
+        //Systems
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
         _gridSystem = new GridSystem(gridComponent, _camera);
+        _vegetableSystem = new VegetableSystem();
         
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
@@ -43,6 +46,9 @@ public class FSGarden : FlowState
 
     public override void ActiveUpdate()
     {
+        //Vegetables
+        _vegetableSystem.UpdateVegetables(_gridSystem, _allVegetables);
+        
         //Grid Highlight
         _gridSystem.DeselectCell(_hoverCell);
         _hoverCell = _gridSystem.GetCellPosFromPointer(Input.mousePosition);
@@ -68,7 +74,10 @@ public class FSGarden : FlowState
         
         if (Input.GetMouseButtonDown(0) && _selectedType != -1)
         {
-            PlaceOnGrid(_allVegetables.VegetableDataObjects[_selectedType].VegetableData);
+            if (_gridSystem.CellValid(_hoverCell))
+            {
+                PlaceOnGrid(_allVegetables.VegetableDataObjects[_selectedType].VegetableData);
+            }
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -83,10 +92,12 @@ public class FSGarden : FlowState
         GridData gridData = new GridData()
         {
             TypeId = _selectedType,
+            CellId = _hoverCell,
             GridObject = gameObject,
-            Data = new VegetableStateData(0, vegetableData.MaxHealth, 1)
+            Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
         };
         _gridSystem.AddEntityToGrid(gridData,_hoverCell);
+        _gridSystem.SelectAndColourCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
     }
     
     public override void ActiveFixedUpdate()
