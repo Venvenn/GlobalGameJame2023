@@ -10,23 +10,25 @@ public class FSShop : FlowState
     private UIManager _uiManager;
     private AllVegetables _allVegetables;
 
-    private List<VegetableData> _vegetableData = new List<VegetableData>();
+    private List<VegetableDataObject> _vegetableData = new List<VegetableDataObject>();
+    private VegetableStockData _stockData;
     
-    public FSShop(UIManager uiManager)
+    public FSShop(UIManager uiManager, VegetableStockData stockData)
     {
         //UI
         _uiManager = uiManager;
         Time.timeScale = 0;
-        _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");;
+        _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
+        _stockData = stockData;
     }
 
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<ShopUI>("UI/Screens/ShopUI", this);
 
-        while (_vegetableData.Count < k_randomVegetableNumber-1)
+        while (_vegetableData.Count < k_randomVegetableNumber)
         {
-            VegetableData data = _allVegetables.VegetableDataObjects[Random.Range(0, _allVegetables.VegetableDataObjects.Length)].VegetableData;
+            VegetableDataObject data = _allVegetables.VegetableDataObjects[Random.Range(0, _allVegetables.VegetableDataObjects.Length)];
             if (!_vegetableData.Contains(data))
             {
                 _vegetableData.Add(data);
@@ -52,6 +54,27 @@ public class FSShop : FlowState
     {
         switch (message)
         {
+            case "finish":
+            {
+                FlowStateMachine.Pop();
+                break;
+            }
+            case ShopVegetableFlowMessage shopVegetableFlowMessage:
+            {
+                if (shopVegetableFlowMessage.Buy)
+                {
+                    _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]++;
+                }
+                else
+                {
+                    if (_stockData.VegetableStock[shopVegetableFlowMessage.VegetableType] > 0)
+                    {
+                        _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]--;
+                    }
+                }
+                break;
+            }
+
         }
     }
 

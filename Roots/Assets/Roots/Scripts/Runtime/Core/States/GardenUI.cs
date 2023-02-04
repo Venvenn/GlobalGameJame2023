@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class GardenUI : FlowScreenUI
 {
-    public VegetableStockData _vegetableStockData;
-    [SerializeField] private InventoryUI _inventoryUI;
-
     public override void InitUI()
     {
 
@@ -13,7 +10,6 @@ public class GardenUI : FlowScreenUI
 
     public override void UpdateUI()
     {
-        _inventoryUI.UpdateStockCounts(_vegetableStockData.VegetableStock);
     }
 
     public override void DestroyUI()

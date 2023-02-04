@@ -8,6 +8,8 @@ public class FSGame : FlowState
     private UIManager _uiManager;
     private FlowStateMachine _gameplayStates;
     
+    private AllVegetables _allVegetables;
+    private VegetableStockData _vegetableStockData;
     
     public FSGame(UIManager uiManager)
     {
@@ -17,12 +19,17 @@ public class FSGame : FlowState
         
         //Time
         Time.timeScale = 1;
+        
+        //Data
+        _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
+        _vegetableStockData = new VegetableStockData(_allVegetables);
     }
 
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
-        _gameplayStates.Push(new FSGarden(_uiManager));
+        _ui._vegetableStockData = _vegetableStockData;
+        _gameplayStates.Push(new FSGarden(_uiManager, _vegetableStockData));
     }
 
     public override void OnActive()
@@ -33,6 +40,7 @@ public class FSGame : FlowState
     public override void ActiveUpdate()
     {
         _gameplayStates.Update();
+        _ui.UpdateUI();
         //temp input 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

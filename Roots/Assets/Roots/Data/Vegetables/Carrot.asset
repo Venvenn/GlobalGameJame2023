@@ -16,8 +16,10 @@ MonoBehaviour:
     GrowingTime: 5
     BaseValue: 3
     SeedValue: 3
-    MaxHealth: 0
+    MaxHealth: 1
     HarvestNumber: 3
-    Icon: {fileID: 21300000, guid: 914c58230da593e449ea59dab8399dde, type: 3}
+    InitialStock: 2
+    Icon: {fileID: 21300000, guid: be4f9d0ee7067dd458ed77fb1ef8fb44, type: 3}
     Prefab: {fileID: 4115887125108576338, guid: 1dd4f76baded18740b286311c1395ca0,
       type: 3}
+    VegetableAbilities: []

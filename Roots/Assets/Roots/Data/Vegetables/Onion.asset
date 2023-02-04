@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b1cd7e271c0a44cbabe2c74cf20dc2, type: 3}
   m_Name: Onion
   m_EditorClassIdentifier: 
+  Id: 1
   VegetableData:
     GrowingTime: 5
     BaseValue: 5
     SeedValue: 1
-    MaxHealth: 0
+    MaxHealth: 1
     HarvestNumber: 1
-    Icon: {fileID: 21300000, guid: 914c58230da593e449ea59dab8399dde, type: 3}
+    InitialStock: 2
+    Icon: {fileID: 21300000, guid: 0a948e5cd68c66c4dbf77e390980f76d, type: 3}
     Prefab: {fileID: 4115887125108576338, guid: 18966ef75d91e5e4a8ab9415df45d953,
       type: 3}
+    VegetableAbilities: []

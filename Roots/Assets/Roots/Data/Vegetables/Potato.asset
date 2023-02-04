@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b1cd7e271c0a44cbabe2c74cf20dc2, type: 3}
   m_Name: Potato
   m_EditorClassIdentifier: 
+  Id: 2
   VegetableData:
     GrowingTime: 5
     BaseValue: 2
     SeedValue: 5
-    MaxHealth: 0
+    MaxHealth: 1
     HarvestNumber: 5
-    Icon: {fileID: 21300000, guid: 914c58230da593e449ea59dab8399dde, type: 3}
+    InitialStock: 2
+    Icon: {fileID: 21300000, guid: 3e4321c6c0e5bf240acb2a2dc6fa91d6, type: 3}
     Prefab: {fileID: 4115887125108576338, guid: 0838d4ea3615c94488ceb66c37c628e7,
       type: 3}
     VegetableAbilities:

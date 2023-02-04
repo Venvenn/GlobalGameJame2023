@@ -20,7 +20,7 @@ public class FSGarden : FlowState
     private int _selectedType = -1;
     private int2 _hoverCell;
     
-    public FSGarden(UIManager uiManager)
+    public FSGarden(UIManager uiManager, VegetableStockData vegetableStockData)
     {
         //UI
         _uiManager = uiManager;
@@ -36,13 +36,12 @@ public class FSGarden : FlowState
         
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
-        _vegetableStockData = new VegetableStockData(_allVegetables);
+        _vegetableStockData = vegetableStockData;
     }
 
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<GardenUI>("UI/Screens/GardenUI", this);
-        _ui._vegetableStockData = _vegetableStockData;
         _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0,  _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
     }
 
@@ -91,16 +90,19 @@ public class FSGarden : FlowState
         }
         if (GameEventSystem.MerchantArrive())
         {
-            FlowStateMachine.Push(new FSShop(_uiManager));
+            FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData));
         }
     }
     
     private void FocusGridSpace(int2 selectedCell)
     {
-        _cameraController.MoveTo(_gridSystem.GetWorldPosition(selectedCell));
-        if (_cameraController.IsZoomOut)
+        if (_gridSystem.CellValid(selectedCell))
         {
-            _cameraController.Zoom(_cameraController.CameraSettings.MinZoom);
+            _cameraController.MoveTo(_gridSystem.GetWorldPosition(selectedCell));
+            if (_cameraController.IsZoomOut)
+            {
+                _cameraController.Zoom(_cameraController.CameraSettings.MinZoom);
+            }  
         }
     }
 
@@ -129,6 +131,7 @@ public class FSGarden : FlowState
         {
             _vegetableStockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * _allVegetables.VegetableDataObjects[vegData.TypeId].VegetableData.HarvestNumber);
             _gridSystem.RemoveEntityFromGrid(grid);
+            _gridSystem.Unhighlight(grid);
         }
     }
 

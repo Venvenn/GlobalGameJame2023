@@ -8,7 +8,9 @@ public class ShopUI : FlowScreenUI
     private Transform _shopTransform;
     [SerializeField] 
     private ShopItem _shopItemPrefab;
-
+    [SerializeField] 
+    private FlowUIGroup _flowUIGroup;
+    
     private List<ShopItem> _shopItems = new List<ShopItem>();
     
     public override void InitUI()
@@ -24,12 +26,13 @@ public class ShopUI : FlowScreenUI
         ClearShop();
     }
 
-    public void PopulateShop(List<VegetableData> vegetableData)
+    public void PopulateShop(List<VegetableDataObject> vegetableData)
     {
         ClearShop();
         for (int i = 0; i < vegetableData.Count; i++)
         {
             ShopItem shopItem = Instantiate(_shopItemPrefab, _shopTransform);
+            shopItem.Init(vegetableData[i].name, vegetableData[i].VegetableData.Icon, 0, 0, vegetableData[i].Id, _flowUIGroup);
             _shopItems.Add(shopItem);
         }
     }

@@ -15,7 +15,7 @@ namespace Siren
         {
             if (m_flowGroup == null)
             {
-                m_flowGroup = FindObjectOfType<FlowUIGroup>();
+                m_flowGroup = GetComponentInParent<FlowUIGroup>();
             }
 
             m_button = GetComponent<Button>();
