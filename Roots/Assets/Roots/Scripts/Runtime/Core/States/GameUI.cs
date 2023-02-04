@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class GameUI : FlowScreenUI
 {
-    public VegetableStockData _vegetableStockData;
+    [SerializeField] private EconomyUI _economyUI;
     [SerializeField] private InventoryUI _inventoryUI;
+
+    public VegetableStockData _vegetableStockData;
+    public EconomyData _economyData;
     
     public override void InitUI()
     {
@@ -14,6 +17,7 @@ public class GameUI : FlowScreenUI
     public override void UpdateUI()
     {
         _inventoryUI.UpdateStockCounts(_vegetableStockData.VegetableStock);
+        _economyUI.UpdateBalance(_economyData.Debt, _economyData.Balance);
     }
 
     public override void DestroyUI()

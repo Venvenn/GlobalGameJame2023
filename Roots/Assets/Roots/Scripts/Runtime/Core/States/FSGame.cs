@@ -10,6 +10,7 @@ public class FSGame : FlowState
     
     private AllVegetables _allVegetables;
     private VegetableStockData _vegetableStockData;
+    private EconomyData _economyData;
     
     public FSGame(UIManager uiManager)
     {
@@ -22,6 +23,7 @@ public class FSGame : FlowState
         
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
+        _economyData = new EconomyData(Resources.Load<EconomyDataSettings>("Data/EconomySettings"));
         _vegetableStockData = new VegetableStockData(_allVegetables);
     }
 
@@ -29,7 +31,8 @@ public class FSGame : FlowState
     {
         _ui = _uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
         _ui._vegetableStockData = _vegetableStockData;
-        _gameplayStates.Push(new FSGarden(_uiManager, _vegetableStockData));
+        _ui._economyData = _economyData;
+        _gameplayStates.Push(new FSGarden(_uiManager, _vegetableStockData, _economyData));
     }
 
     public override void OnActive()
@@ -75,6 +78,11 @@ public class FSGame : FlowState
             case PlaceVegetableFlowMessage vegetablePlaceMessage:
             {
                 _gameplayStates.SendFlowMessage(vegetablePlaceMessage, _gameplayStates.GetTopState());
+                break;
+            }
+            case NewMonthMessage newMonthMessage:
+            {
+                _gameplayStates.SendFlowMessage(newMonthMessage, _gameplayStates.GetTopState());
                 break;
             }
         }

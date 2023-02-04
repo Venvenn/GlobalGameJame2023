@@ -10,6 +10,7 @@ public class GardenUI : FlowScreenUI
 
     public override void UpdateUI()
     {
+
     }
 
     public override void DestroyUI()
