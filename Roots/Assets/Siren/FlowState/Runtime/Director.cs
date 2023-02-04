@@ -1,36 +1,37 @@
-﻿using UnityEngine;
+﻿using Shapes;
 
 namespace Siren
 {
     /// <summary>
-    /// A director is a base type used set up and bootstrap a Flow state machine, You should make a custom one for each
-    /// game.
+    /// A director should hold the main flow state machine and is the flow states way of accessing unity update methods
     /// </summary>
-    public abstract class Director : MonoBehaviour
+    public abstract class Director : ImmediateModeShapeDrawer
     {
-        public FlowStateMachine FlowStateMachine = new FlowStateMachine();
-
+        public FlowStateMachine m_flowStateMachine = new FlowStateMachine();
+    
         private void Start()
         {
             OnStart();
         }
-        
-        private void Update()
+
+        // Update is called once per frame
+        void Update()
         {
             OnUpdate();
-            FlowStateMachine.Update();
+            m_flowStateMachine.Update();
         }
 
         private void FixedUpdate()
         {
             OnFixedUpdate();
-            FlowStateMachine.FixedUpdate();
+            m_flowStateMachine.FixedUpdate();
         }
 
         public abstract void OnStart();
-
+    
         public abstract void OnUpdate();
-
+    
         public abstract void OnFixedUpdate();
     }
 }
+

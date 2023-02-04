@@ -3,31 +3,40 @@
 namespace Siren
 {
     /// <summary>
-    /// The flow state machine is the heart of the Flowstate system that handles the pushing and popping of active states
+    /// State machine that control the flow between states as well as what stage a state is in 
     /// </summary>
-    public class FlowStateMachine
+    public class FlowStateMachine : BaseFlowStateMachine
     {
-        private readonly Queue<object> m_flowMessages = new Queue<object>();
-        private readonly Queue<(StackAction, FlowState)> m_stateActionQueue = new Queue<(StackAction, FlowState)>();
+        /// <summary>
+        /// the state stack is used to store all the states owned by this fsm, the top one being the currently active state
+        /// </summary>
+        private Stack<FlowState> m_stateStack = new Stack<FlowState>();
 
-        public FlowState OwningState = null;
-        protected Stack<FlowState> m_stateStack = new Stack<FlowState>();
-
-        public void Update()
+        public int StateCount => m_stateStack.Count;
+        
+        public FlowStateMachine(FlowState owningState = null)
+        {
+            m_owningState = owningState;
+        }
+        
+        /// <summary>
+        /// update the state on the top of the state stack
+        /// </summary>
+        public override void Update()
         {
             if (m_stateStack.Count > 0)
             {
-                var flowState = m_stateStack.Peek();
-                switch (flowState.Stage)
+                FlowState flowState = m_stateStack.Peek();
+                switch (flowState.m_stage)
                 {
                     case FlowState.StateStage.PRESENTING:
                     {
-                        var transitionState = flowState.UpdatePresenting();
+                        FlowState.TransitionState transitionState = flowState.UpdateInitialise();
                         if (transitionState == FlowState.TransitionState.COMPLETED)
                         {
-                            flowState.FinishPresenting();
+                            flowState.FinishInitialise();
                             flowState.OnActive();
-                            flowState.Stage = FlowState.StateStage.ACTIVE;
+                            flowState.m_stage = FlowState.StateStage.ACTIVE;
                         }
 
                         break;
@@ -40,76 +49,85 @@ namespace Siren
                     }
                     case FlowState.StateStage.DISMISSING:
                     {
-                        var transitionState = flowState.UpdateDismissing();
+                        FlowState.TransitionState transitionState = flowState.UpdateDismiss();
                         if (transitionState == FlowState.TransitionState.COMPLETED)
                         {
-                            flowState.FinishDismissing();
-                            flowState.Stage = FlowState.StateStage.INACTIVE;
+                            flowState.FinishDismiss();
+                            flowState.m_stage = FlowState.StateStage.INACTIVE;
                             PopState();
-                            m_stateStack.Peek().Stage = FlowState.StateStage.ACTIVE;
                         }
 
                         break;
                     }
                 }
             }
-
             UpdateStateStack();
         }
 
-        public void FixedUpdate()
+        /// <summary>
+        /// performs a fixed update for the top state
+        /// </summary>
+        public override void FixedUpdate()
         {
-            if (m_stateStack.Count > 0 && m_stateStack.Peek().Stage == FlowState.StateStage.ACTIVE)
+            if (m_stateStack.Count > 0 && m_stateStack.Peek().m_stage == FlowState.StateStage.ACTIVE)
+            {
                 m_stateStack.Peek().ActiveFixedUpdate();
+            }
         }
 
-        public void Pop()
+        public override void Render()
+        {
+            if (m_stateStack.Count > 0 && m_stateStack.Peek().m_stage == FlowState.StateStage.ACTIVE)
+            {
+                m_stateStack.Peek().OnRender();
+            }
+        }
+
+        /// <summary>
+        /// pops the state on top of the state stack 
+        /// </summary>
+        public override void Pop()
         {
             m_stateActionQueue.Enqueue((StackAction.POP, null));
         }
 
-        public void Push(FlowState flowState)
+        /// <summary>
+        /// pushes a new state onto the top of the stack 
+        /// </summary>
+        public override void Push(FlowState flowState)
         {
             m_stateActionQueue.Enqueue((StackAction.PUSH, flowState));
         }
-
-        public void SendFlowMessage(object message)
+        
+        /// <summary>
+        /// returns the currently active flow state
+        /// </summary>
+        public override FlowState GetTopState()
         {
-            m_flowMessages.Enqueue(message);
-        }
-
-        public FlowState GetTopState()
-        {
-            if (m_stateStack.Count > 0) return m_stateStack.Peek();
+            if (m_stateStack.Count > 0)
+            {
+                return m_stateStack.Peek();
+            }
 
             return null;
         }
 
-        private void ReceiveFlowMessages()
+        /// <summary>
+        /// Sends all the messages in the message queue to the top state
+        /// </summary>
+        protected override void ReceiveFlowMessages()
         {
-            for (var i = 0; i < m_flowMessages.Count; i++)
+            for (int i = 0; i < m_flowMessages.Count; i++)
             {
-                var message = m_flowMessages.Dequeue();
+                object message = m_flowMessages.Dequeue().message;
                 m_stateStack.Peek().ReceiveFlowMessages(message);
             }
         }
-
-        private void PushState(FlowState flowState)
-        {
-            if (m_stateStack.Count > 0)
-            {
-                m_stateStack.Peek().Stage = FlowState.StateStage.INACTIVE;
-                m_stateStack.Peek().OnInactive();
-            }
-
-            m_stateStack.Push(flowState);
-
-            flowState.FlowStateMachine = this;
-            flowState.Stage = FlowState.StateStage.PRESENTING;
-            flowState.StartPresenting();
-        }
-
-        private void UpdateStateStack()
+        
+        /// <summary>
+        /// performs stack actions if there are any to perform
+        /// </summary>
+        protected override void UpdateStateStack()
         {
             if (m_stateActionQueue.Count > 0)
             {
@@ -117,8 +135,11 @@ namespace Siren
                 switch (action.Item1)
                 {
                     case StackAction.POP:
-                        m_stateStack.Peek().StartDismissing();
-                        m_stateStack.Peek().Stage = FlowState.StateStage.DISMISSING;
+                        if (m_stateStack.Count > 0)
+                        {
+                            m_stateStack.Peek().OnDismiss();
+                            m_stateStack.Peek().m_stage = FlowState.StateStage.DISMISSING;
+                        }
                         break;
                     case StackAction.PUSH:
                         PushState(action.Item2);
@@ -127,20 +148,51 @@ namespace Siren
             }
         }
 
-        private void PopState()
+        /// <summary>
+        /// pushes a new state onto the top of the stack 
+        /// </summary>
+        protected override void PushState(FlowState flowState)
         {
-            if (m_stateStack.Count > 1)
+            if (m_stateStack.Count > 0)
+            {
+                m_stateStack.Peek().m_stage = FlowState.StateStage.INACTIVE;
+                m_stateStack.Peek().OnInactive();
+            }
+
+            m_stateStack.Push(flowState);
+
+            flowState.FlowStateMachine = this;
+            flowState.m_stage = FlowState.StateStage.PRESENTING;
+            flowState.OnInitialise();
+        }
+        
+        /// <summary>
+        /// pops the state on top of the state stack 
+        /// </summary>
+        protected override void PopState()
+        {
+            if (m_stateStack.Count > 0)
             {
                 m_stateStack.Peek().OnInactive();
                 m_stateStack.Pop();
-                m_stateStack.Peek().OnActive();
+
+                if (m_stateStack.Count > 0)
+                {
+                    m_stateStack.Peek().OnActive();
+                    m_stateStack.Peek().m_stage = FlowState.StateStage.ACTIVE;
+                }
             }
         }
-
-        private enum StackAction
+        
+        /// <summary>
+        /// Pops all of the states belonging to this state machine
+        /// </summary>
+        public override void PopAllStates()
         {
-            PUSH,
-            POP
+            for (int i = 0; i < m_stateStack.Count; i++)
+            {
+                Pop();
+            }
         }
     }
 }
