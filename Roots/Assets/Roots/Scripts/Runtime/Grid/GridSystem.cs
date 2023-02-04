@@ -6,7 +6,7 @@ using Unity.Mathematics;
 public class GridSystem
 {
     private const string k_floorLayer = "Floor";
-    
+
     private SquareGridComponent _gridComponent;
     private Dictionary<int2,GridData> _entities;
     private Camera _camera;
@@ -25,9 +25,18 @@ public class GridSystem
 
     public void AddEntityToGrid(GridData data, int2 gridPos)
     {
-        if (CellValid(gridPos))
+        if (CellValid(gridPos) && !HasEntity(gridPos))
         {
             _entities.Add(gridPos, data);
+        }
+    }
+    
+    public void RemoveEntityFromGrid(int2 gridPos)
+    {
+        if (CellValid(gridPos) && HasEntity(gridPos))
+        {
+            Object.Destroy(_entities[gridPos].GridObject);
+            _entities.Remove(gridPos);
         }
     }
 
@@ -72,14 +81,13 @@ public class GridSystem
     {
         foreach (var entity in _entities)
         {
-            if (entity.Value.Id == id)
+            if (entity.Value.TypeId == id)
             {
                 return entity.Key;
             }
         }
         return new int2(-1,-1);
     }
-    
     
     public void SelectCell(int2 cellPos)
     {
@@ -102,6 +110,31 @@ public class GridSystem
         gridData = default;
         return false;
     }
+
+    public bool[] CheckAdjacent(int2 gridCell, int2 distance, params int[] typesToLookFor)
+    {
+        bool[] results = new bool[typesToLookFor.Length];
+        for (int y = gridCell.y - distance.y; y < gridCell.y + distance.y; y++)
+        {
+            for (int x = gridCell.x - distance.x; x < gridCell.x + distance.x; x++)
+            {
+                int2 checkCell = new int2(x, y);
+                if (CellValid(checkCell) && GetEntity(checkCell, out GridData gridData))
+                {
+                    for (int i = 0; i < typesToLookFor.Length; i++)
+                    {
+                        if (typesToLookFor[i] == gridData.TypeId)
+                        {
+                            results[i] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+    
     
     public void ClearAllSelectedCells()
     {

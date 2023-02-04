@@ -36,7 +36,10 @@ public class TimeUI : MonoBehaviour
         m_dateText.text = $"{dayText}/{monthText}/{yearText}";
 
         //float phaseTime = m_timeSettings.m_phaseOffset / 24;
-        m_clockFace.transform.rotation =
-            Quaternion.Euler(Vector3.LerpUnclamped(new Vector3(0, 0, 0), new Vector3(0, 0, -360), time));
+        if (time != 0)
+        {
+            m_clockFace.transform.rotation = Quaternion.Euler(Vector3.LerpUnclamped(new Vector3(0, 0, 0), new Vector3(0, 0, -360), time));
+        }
+
     }
 }

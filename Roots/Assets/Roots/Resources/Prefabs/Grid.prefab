@@ -45,11 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed3e1c66f934c2144a60732546fd1803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size:
-    x: 20
-    y: 20
-  _gridColour: {r: 1, g: 1, b: 1, a: 1}
-  _selectionColour: {r: 1, g: 1, b: 1, a: 1}
+  _gridSettings: {fileID: 11400000, guid: 130ec15c160ff0b4fae9f653535552cc, type: 2}
 --- !u!156049354 &7224150269608346610
 Grid:
   m_ObjectHideFlags: 0
