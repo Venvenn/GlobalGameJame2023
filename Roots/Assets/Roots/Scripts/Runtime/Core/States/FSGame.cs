@@ -72,9 +72,9 @@ public class FSGame : FlowState
                 Pause();
                 break;
             }
-            case (PlaceVegetableFlowMessage vegatablePlaceMessage):
+            case PlaceVegetableFlowMessage vegetablePlaceMessage:
             {
-                _gameplayStates.SendFlowMessage(vegatablePlaceMessage, _gameplayStates.GetTopState());
+                _gameplayStates.SendFlowMessage(vegetablePlaceMessage, _gameplayStates.GetTopState());
                 break;
             }
         }
