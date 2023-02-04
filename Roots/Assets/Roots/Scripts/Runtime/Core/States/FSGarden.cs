@@ -10,6 +10,7 @@ public class FSGarden : FlowState
     private Camera _camera;
 
     private AllVegetables _allVegetables;
+    private VegetableStockData _vegetableStockData;
     
     private GridSystem _gridSystem;
     private VegetableSystem _vegetableSystem;
@@ -35,11 +36,13 @@ public class FSGarden : FlowState
         
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
+        _vegetableStockData = new VegetableStockData(_allVegetables);
     }
 
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<GardenUI>("UI/Screens/GardenUI", this);
+        _ui._vegetableStockData = _vegetableStockData;
         _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0,  _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
     }
 
@@ -74,10 +77,10 @@ public class FSGarden : FlowState
 
         if (Input.GetMouseButtonDown(1))
         {
-            _gridSystem.RemoveEntityFromGrid(_hoverCell);
+            PluckVegetable(_hoverCell);
         }
-
         RunEvents();
+        _ui.UpdateUI();        
     }
     
     private void RunEvents()
@@ -112,12 +115,23 @@ public class FSGarden : FlowState
 
     private void TryPlaceOnGrid(VegetableData vegetableData)
     {
-        if (_gridSystem.CellValid(_hoverCell) && vegetableData.Prefab != null)
+        if (_gridSystem.CellValid(_hoverCell) && vegetableData.Prefab != null && _vegetableStockData.VegetableStock[_selectedType] > 0)
         {
             PlaceOnGrid(vegetableData);
+            _vegetableStockData.VegetableStock[_selectedType]--;
         }
     }
-    
+
+    private void PluckVegetable(int2 grid)
+    {
+        GridData vegData = new GridData();
+        if (_gridSystem.GetEntity(grid, out vegData))
+        {
+            _vegetableStockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * _allVegetables.VegetableDataObjects[vegData.TypeId].VegetableData.HarvestNumber);
+            _gridSystem.RemoveEntityFromGrid(grid);
+        }
+    }
+
     private void PlaceOnGrid(VegetableData vegetableData)
     {
         VegetableObject gameObject = Object.Instantiate(vegetableData.Prefab);

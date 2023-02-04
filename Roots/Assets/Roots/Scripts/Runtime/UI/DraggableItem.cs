@@ -10,6 +10,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     [SerializeField] private Image _iconImage;
     [SerializeField] private Image _cursorImage;
     [SerializeField] private int _vegetableID;
+    [SerializeField] private TMPro.TextMeshProUGUI _stockCount;
+
+    public int VegetableID => _vegetableID;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -26,5 +29,10 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     {
         _cursorImage.gameObject.SetActive(false);
         _inventoryUI.SendVegetableMessage(_vegetableID);
+    }
+
+    public void SetStock(int amount)
+    {
+        _stockCount.text = amount.ToString();
     }
 }

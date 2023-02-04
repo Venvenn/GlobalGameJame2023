@@ -36,7 +36,7 @@ public class GridSystem
     {
         if (CellValid(gridPos) && HasEntity(gridPos))
         {
-            Object.Destroy(Entities[gridPos].GridObject);
+            Object.Destroy(Entities[gridPos].GridObject.gameObject);
             Entities.Remove(gridPos);
         }
     }

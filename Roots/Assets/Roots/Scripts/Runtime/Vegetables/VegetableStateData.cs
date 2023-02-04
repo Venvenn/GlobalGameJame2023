@@ -14,4 +14,9 @@ public class VegetableStateData
         Quality = quality;
         PlantTime = plantTime;
     }
+
+    public float GetYield()
+    {
+        return (Growth * Health * Quality);
+    }
 }
