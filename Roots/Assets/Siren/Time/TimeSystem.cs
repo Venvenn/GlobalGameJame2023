@@ -17,7 +17,7 @@ public static class TimeSystem
     public static void Init(TimeSettings timeSettings)
     {
         s_timeSettings = timeSettings;
-        Date = new Date(s_timeSettings.m_startDate.Day, s_timeSettings.m_startDate.Month, s_timeSettings.m_startDate.Year);
+        Date = new Date(s_timeSettings._startDate.Day, s_timeSettings._startDate.Month, s_timeSettings._startDate.Year);
         s_leapYearBonus = Date.Year % 4 == 0 ? 1 : 0;
         s_phaseOffsetValue = s_timeSettings.m_phaseOffset / 24f;
         s_gameTime = s_phaseOffsetValue * s_timeSettings.m_dayLength;
