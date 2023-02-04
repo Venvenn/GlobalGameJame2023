@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public struct GridEntity
+public struct GridData
 {
     public int Type;
     public int Id;
-    public GameObject EntityObject;
+    public GameObject GridObject;
 }

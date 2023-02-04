@@ -1,22 +1,32 @@
 using Siren;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FSGame : FlowState
 {
-    private GameUI m_ui;
-    private UIManager m_uiManager;
-    private FlowStateMachine m_gameplayStates;
+    private GameUI _ui;
+    private UIManager _uiManager;
+    private FlowStateMachine _gameplayStates;
+    private GridSystem _gridSystem;
+    private Camera _camera;
 
     public FSGame(UIManager uiManager)
     {
         //UI
-        m_uiManager = uiManager;
-        m_gameplayStates = new FlowStateMachine(this);
+        _uiManager = uiManager;
+        _gameplayStates = new FlowStateMachine(this);
+        
+        //Camera
+        _camera = Camera.main;
+        
+        //Grid
+        SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
+        _gridSystem = new GridSystem(gridComponent, _camera);
     }
 
     public override void OnInitialise()
     {
-        m_ui = m_uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
+        _ui = _uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
     }
 
     public override void OnActive()
@@ -25,23 +35,31 @@ public class FSGame : FlowState
 
     public override void ActiveUpdate()
     {
-        m_gameplayStates.Update();
+        _gameplayStates.Update();
         
         //temp input 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            _gridSystem.ClearAllSelectedCells();
+            int2 cellPosFromPointer = _gridSystem.GetCellPosFromPointer(Input.mousePosition);
+            Debug.Log(cellPosFromPointer);
+            _gridSystem.SelectCell(cellPosFromPointer);
+        }
     }
     
     public override void ActiveFixedUpdate()
     {
-        m_gameplayStates.FixedUpdate();
+        _gameplayStates.FixedUpdate();
     }
 
     private void Pause()
     {
-        FlowStateMachine.Push(new FSPauseMenu(this, m_uiManager));
+        FlowStateMachine.Push(new FSPauseMenu(this, _uiManager));
     }
     
     public override void ReceiveFlowMessages(object message)
@@ -67,13 +85,13 @@ public class FSGame : FlowState
 
     public override void OnDismiss()
     {
-        m_gameplayStates.PopAllStates();
+        _gameplayStates.PopAllStates();
     }
 
     public override TransitionState UpdateDismiss()
     {
-        m_gameplayStates.Update();
-        if(m_gameplayStates.StateCount == 0)
+        _gameplayStates.Update();
+        if(_gameplayStates.StateCount == 0)
         {
             return TransitionState.COMPLETED;
         }
@@ -82,6 +100,7 @@ public class FSGame : FlowState
 
     public override void FinishDismiss()
     {
-        Object.Destroy(m_ui.gameObject);
+        Object.Destroy(_ui.gameObject);
+        _gridSystem.Destroy();
     }
 }
