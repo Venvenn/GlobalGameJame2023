@@ -11,17 +11,17 @@ public class FSGarden : FlowState
 
     private AllVegetables _allVegetables;
     private VegetableStockData _vegetableStockData;
-    
+
     private GridSystem _gridSystem;
     private VegetableSystem _vegetableSystem;
     private CameraController _cameraController;
-    
+
     //temp data
     private int _selectedType = -1;
     private int2 _hoverCell;
 
     private EconomyData _economyData;
-    
+
     public FSGarden(UIManager uiManager)
     {
         //UI
@@ -30,12 +30,12 @@ public class FSGarden : FlowState
         //Camera
         _camera = Camera.main;
         _cameraController = _camera.GetComponentInParent<CameraController>();
-        
+
         //Systems
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
         _gridSystem = new GridSystem(gridComponent, _camera);
         _vegetableSystem = new VegetableSystem();
-        
+
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
         _vegetableStockData = new VegetableStockData(_allVegetables);
@@ -46,7 +46,7 @@ public class FSGarden : FlowState
     {
         _ui = _uiManager.LoadUIScreen<GardenUI>("UI/Screens/GardenUI", this);
         _ui._vegetableStockData = _vegetableStockData;
-        _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0,  _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
+        _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0, _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
     }
 
     public override void OnActive()
@@ -57,7 +57,7 @@ public class FSGarden : FlowState
     {
         //Vegetables
         _vegetableSystem.UpdateVegetables(_gridSystem, _allVegetables);
-        
+
         //Grid Highlight
         _gridSystem.DeselectCell(_hoverCell);
         _hoverCell = _gridSystem.GetCellPosFromPointer(Input.mousePosition);
@@ -117,7 +117,7 @@ public class FSGarden : FlowState
 
         _ui.UpdateUI();
     }
-    
+
     private void FocusGridSpace(int2 selectedCell)
     {
         _cameraController.MoveTo(_gridSystem.GetWorldPosition(selectedCell));
@@ -167,10 +167,10 @@ public class FSGarden : FlowState
             GridObject = gameObject,
             Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
         };
-        _gridSystem.AddEntityToGrid(gridData,_hoverCell);
+        _gridSystem.AddEntityToGrid(gridData, _hoverCell);
         _gridSystem.HighlightCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
     }
-    
+
     public override void ActiveFixedUpdate()
     {
     }
@@ -183,6 +183,21 @@ public class FSGarden : FlowState
                 _selectedType = placeVegetableFlowMessage.VegetableType;
                 TryPlaceOnGrid(_allVegetables.VegetableDataObjects[placeVegetableFlowMessage.VegetableType].VegetableData);
                 break;
+            case (NewMonthMessage newMonthMessage):
+                OnNewMonth();
+                break;
+        }
+    }
+
+    private void OnNewMonth()
+    {
+        if (!_economyData.MonthTick())
+        {
+            //TODO: LOSE GAME
+        }
+        else if (_economyData.Debt <= 0)
+        {
+            //TODO: WIN GAME
         }
     }
 

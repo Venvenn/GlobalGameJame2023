@@ -70,6 +70,11 @@ public class FSGame : FlowState
                 _gameplayStates.SendFlowMessage(vegatablePlaceMessage, _gameplayStates.GetTopState());
                 break;
             }
+            case (NewMonthMessage newMonthMessage):
+            {
+                _gameplayStates.SendFlowMessage(newMonthMessage, _gameplayStates.GetTopState());
+                break;
+            }
         }
     }
 

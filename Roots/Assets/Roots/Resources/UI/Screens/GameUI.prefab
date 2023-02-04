@@ -138,6 +138,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -37.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5214087462374395591, guid: bdfef87a9012b97408539c36f4d140ab,
+        type: 3}
+      propertyPath: _flowUIGroup
+      value: 
+      objectReference: {fileID: 2393543346981505358}
     - target: {fileID: 5321109448598405796, guid: bdfef87a9012b97408539c36f4d140ab,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -300,6 +305,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7212178817847485491}
   m_SourcePrefab: {fileID: 100100000, guid: 67820940a308b9d47b1ae3d343897260, type: 3}
+--- !u!114 &2393543346981505358 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5717513342030697202, guid: 67820940a308b9d47b1ae3d343897260,
+    type: 3}
+  m_PrefabInstance: {fileID: 7957617453144398780}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2431576785130437681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d490974c8d5d7469214b1e91534b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2431576785130437681 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5751537466865084301, guid: 67820940a308b9d47b1ae3d343897260,
