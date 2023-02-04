@@ -65,6 +65,11 @@ public class FSGame : FlowState
                 Pause();
                 break;
             }
+            case (PlaceVegetableFlowMessage vegatablePlaceMessage):
+            {
+                _gameplayStates.SendFlowMessage(vegatablePlaceMessage, _gameplayStates.GetTopState());
+                break;
+            }
         }
     }
 

@@ -57,6 +57,7 @@ public class FSGarden : FlowState
         _hoverCell = _gridSystem.GetCellPosFromPointer(Input.mousePosition);
         _gridSystem.SelectCell(_hoverCell);
 
+        /*
         //Temp Input
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -74,7 +75,8 @@ public class FSGarden : FlowState
         {
             _selectedType = 2;
         }
-        
+        */
+
         if (Input.mouseScrollDelta.y > 0 && _cameraController.IsZoomOut)
         {
             FocusGridSpace(_hoverCell);
@@ -90,6 +92,7 @@ public class FSGarden : FlowState
             FocusGridSpace(_hoverCell);
         }
         
+        /*
         if (Input.GetMouseButtonDown(0) && _selectedType != -1)
         {
             if (_gridSystem.CellValid(_hoverCell))
@@ -97,6 +100,7 @@ public class FSGarden : FlowState
                 PlaceOnGrid(_allVegetables.VegetableDataObjects[_selectedType].VegetableData);
             }
         }
+        */
         
         if (Input.GetMouseButtonDown(1))
         {
@@ -124,6 +128,16 @@ public class FSGarden : FlowState
         }
     }
 
+    private void TryPlaceOnGrid(VegetableData vegetableData)
+    {
+        if (_gridSystem.CellValid(_hoverCell) && vegetableData.Prefab != null)
+        {
+            PlaceOnGrid(vegetableData);
+        }
+    }
+
+
+
     private void PlaceOnGrid(VegetableData vegetableData)
     {
         VegetableObject gameObject = Object.Instantiate(vegetableData.Prefab);
@@ -148,6 +162,10 @@ public class FSGarden : FlowState
     {
         switch (message)
         {
+            case (PlaceVegetableFlowMessage placeVegetableFlowMessage):
+                _selectedType = placeVegetableFlowMessage.VegetableType;
+                TryPlaceOnGrid(_allVegetables.VegetableDataObjects[placeVegetableFlowMessage.VegetableType].VegetableData);
+                break;
         }
     }
 
