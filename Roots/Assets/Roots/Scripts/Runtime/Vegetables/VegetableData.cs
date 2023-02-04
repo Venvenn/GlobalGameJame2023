@@ -9,6 +9,7 @@ public struct VegetableData
     public int SeedValue;
     public int MaxHealth;
     public int HarvestNumber;
+    public int InitialStock;
     public Sprite Icon;
     public VegetableObject Prefab;
 }
