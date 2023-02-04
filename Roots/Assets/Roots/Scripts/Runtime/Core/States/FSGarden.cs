@@ -19,6 +19,8 @@ public class FSGarden : FlowState
     //temp data
     private int _selectedType = -1;
     private int2 _hoverCell;
+
+    private EconomyData _economyData;
     
     public FSGarden(UIManager uiManager)
     {
@@ -37,6 +39,7 @@ public class FSGarden : FlowState
         //Data
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
         _vegetableStockData = new VegetableStockData(_allVegetables);
+        _economyData = new EconomyData(Resources.Load<EconomyDataSettings>("Data/EconomySettings"));
     }
 
     public override void OnInitialise()
@@ -94,7 +97,7 @@ public class FSGarden : FlowState
         {
             FocusGridSpace(_hoverCell);
         }
-        
+
         /*
         if (Input.GetMouseButtonDown(0) && _selectedType != -1)
         {
@@ -104,12 +107,14 @@ public class FSGarden : FlowState
             }
         }
         */
-        
+
+        _ui._economyData = _economyData;
+
         if (Input.GetMouseButtonDown(1))
         {
             PluckVegetable(_hoverCell);
         }
-        
+
         _ui.UpdateUI();
     }
     
