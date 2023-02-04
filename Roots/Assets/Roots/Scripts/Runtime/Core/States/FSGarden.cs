@@ -107,7 +107,7 @@ public class FSGarden : FlowState
         
         if (Input.GetMouseButtonDown(1))
         {
-            _gridSystem.RemoveEntityFromGrid(_hoverCell);
+            PluckVegetable(_hoverCell);
         }
         
         _ui.UpdateUI();
@@ -140,7 +140,15 @@ public class FSGarden : FlowState
         }
     }
 
-
+    private void PluckVegetable(int2 grid)
+    {
+        GridData vegData = new GridData();
+        if (_gridSystem.GetEntity(grid, out vegData))
+        {
+            _vegetableStockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * _allVegetables.VegetableDataObjects[vegData.TypeId].VegetableData.HarvestNumber);
+            _gridSystem.RemoveEntityFromGrid(grid);
+        }
+    }
 
     private void PlaceOnGrid(VegetableData vegetableData)
     {
