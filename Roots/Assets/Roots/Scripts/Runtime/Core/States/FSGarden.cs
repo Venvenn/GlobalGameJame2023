@@ -32,6 +32,7 @@ public class FSGarden : FlowState
 
         //Systems
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
+        gridComponent.transform.position = new Vector3(gridComponent.transform.position.x, 0.16f, gridComponent.transform.position.z);
         _gridSystem = new GridSystem(gridComponent, _camera);
         _vegetableSystem = new VegetableSystem();
 
@@ -49,7 +50,9 @@ public class FSGarden : FlowState
 
     public override void OnActive()
     {
+        _ui.gameObject.SetActive(true);
     }
+
 
     public override void ActiveUpdate()
     {
@@ -121,7 +124,7 @@ public class FSGarden : FlowState
         {
             _vegetableStockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * _allVegetables.VegetableDataObjects[vegData.TypeId].VegetableData.HarvestNumber);
             _gridSystem.RemoveEntityFromGrid(grid);
-            _gridSystem.Unhighlight(grid);
+            //_gridSystem.Unhighlight(grid);
         }
     }
 
@@ -138,7 +141,7 @@ public class FSGarden : FlowState
             Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
         };
         _gridSystem.AddEntityToGrid(gridData, _hoverCell);
-        _gridSystem.HighlightCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
+        //_gridSystem.HighlightCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
     }
 
     public override void ActiveFixedUpdate()
@@ -176,6 +179,7 @@ public class FSGarden : FlowState
 
     public override void OnInactive()
     {
+        _ui.gameObject.SetActive(false);
     }
 
     public override void OnDismiss()

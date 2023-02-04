@@ -21,7 +21,7 @@ MonoBehaviour:
     HarvestNumber: 5
     InitialStock: 2
     Icon: {fileID: 21300000, guid: 3e4321c6c0e5bf240acb2a2dc6fa91d6, type: 3}
-    Prefab: {fileID: 4115887125108576338, guid: 0838d4ea3615c94488ceb66c37c628e7,
+    Prefab: {fileID: 6476787792508222928, guid: fbc02dd4b58ac2541a334997b7cb2866,
       type: 3}
     VegetableAbilities:
     - AbilityType: 1

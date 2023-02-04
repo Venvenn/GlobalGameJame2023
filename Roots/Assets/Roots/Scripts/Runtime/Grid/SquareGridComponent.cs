@@ -14,6 +14,8 @@ public class SquareGridComponent : MonoBehaviour
     private Dictionary<int2, Color> m_selectedCells;
     private Dictionary<int2, Color> m_heilightedCells;
 
+    public GridObject GridObjectPrefab;
+    
     public int2 Size => _gridSettings.Size;
 
     public void Init()
@@ -85,34 +87,34 @@ public class SquareGridComponent : MonoBehaviour
     
     public void OnRenderObject()
     {
-        for (int y = 0; y < Size.y; y++)
-        {
-            for (int x = 0; x < Size.x; x++)
-            {
-                Draw.Color = _gridSettings.GridColour;
-                Draw.Line(new Vector3(x, k_gridY,y), new Vector3(x+1,k_gridY,y));
-                Draw.Line(new Vector3(x, k_gridY, y), new Vector3(x,k_gridY, y+1));
-                
-                if (x == Size.x-1)
-                {
-                    Draw.Line(new Vector3(x+1,k_gridY, y), new Vector3(x+1,k_gridY, y+1));
-                }
-                if (y == Size.y-1)
-                {
-                    Draw.Line(new Vector3(x,k_gridY, y+1), new Vector3(x+1,k_gridY, y+1));
-                }
-            }
-        }
+        // for (int y = 0; y < Size.y; y++)
+        // {
+        //     for (int x = 0; x < Size.x; x++)
+        //     {
+        //         Draw.Color = _gridSettings.GridColour;
+        //         Draw.Line(new Vector3(x, transform.position.y+k_gridY,y), new Vector3(x+1,transform.position.y+k_gridY,y));
+        //         Draw.Line(new Vector3(x, transform.position.y+k_gridY, y), new Vector3(x,transform.position.y+k_gridY, y+1));
+        //         
+        //         if (x == Size.x-1)
+        //         {
+        //             Draw.Line(new Vector3(x+1,transform.position.y+k_gridY, y), new Vector3(x+1,transform.position.y+k_gridY, y+1));
+        //         }
+        //         if (y == Size.y-1)
+        //         {
+        //             Draw.Line(new Vector3(x,transform.position.y+k_gridY, y+1), new Vector3(x+1,transform.position.y+k_gridY, y+1));
+        //         }
+        //     }
+        // }
 
         foreach (KeyValuePair<int2 ,Color> selectedCell in m_selectedCells)
         {
             int2 gridPos = selectedCell.Key;
             Draw.Color = selectedCell.Value;
             Draw.Quad(
-                new Vector3(gridPos.x,k_gridY,gridPos.y), 
-                new Vector3(gridPos.x+1,k_gridY,gridPos.y), 
-                new Vector3(gridPos.x+1,k_gridY,gridPos.y+1), 
-                new Vector3(gridPos.x,k_gridY,gridPos.y+1));
+                new Vector3(gridPos.x,transform.position.y +k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,transform.position.y +k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,transform.position.y +k_gridY,gridPos.y+1), 
+                new Vector3(gridPos.x,transform.position.y +k_gridY,gridPos.y+1));
         }
         
         foreach (KeyValuePair<int2 ,Color> highlightedCell in m_heilightedCells)
@@ -120,10 +122,10 @@ public class SquareGridComponent : MonoBehaviour
             int2 gridPos = highlightedCell.Key;
             Draw.Color = highlightedCell.Value;
             Draw.Quad(
-                new Vector3(gridPos.x,k_gridY,gridPos.y), 
-                new Vector3(gridPos.x+1,k_gridY,gridPos.y), 
-                new Vector3(gridPos.x+1,k_gridY,gridPos.y+1), 
-                new Vector3(gridPos.x,k_gridY,gridPos.y+1));
+                new Vector3(gridPos.x,transform.position.y +k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,transform.position.y +k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,transform.position.y +k_gridY,gridPos.y+1), 
+                new Vector3(gridPos.x,transform.position.y +k_gridY,gridPos.y+1));
         }
     }
 }

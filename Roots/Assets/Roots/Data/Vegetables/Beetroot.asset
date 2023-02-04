@@ -10,17 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12b1cd7e271c0a44cbabe2c74cf20dc2, type: 3}
-  m_Name: Onion
+  m_Name: Beetroot
   m_EditorClassIdentifier: 
-  Id: 1
+  Id: 3
   VegetableData:
     GrowingTime: 5
-    BaseValue: 5
-    SeedValue: 1
+    BaseValue: 2
+    SeedValue: 5
     MaxHealth: 1
-    HarvestNumber: 1
+    HarvestNumber: 5
     InitialStock: 2
-    Icon: {fileID: 21300000, guid: 0a948e5cd68c66c4dbf77e390980f76d, type: 3}
-    Prefab: {fileID: -4971532333677052736, guid: 0c42e76765f615044972ba352a96778a,
+    Icon: {fileID: 21300000, guid: a9b44ca3e0a1bc74fb351f615a6516c5, type: 3}
+    Prefab: {fileID: 7714339486572972556, guid: 0ee4c69fc5743c945bbb4cff0d6fbb69,
       type: 3}
-    VegetableAbilities: []
+    VegetableAbilities:
+    - AbilityType: 1
+      GridDistance:
+        x: 1
+        y: 1
+      Amount: 1
+      Frequency: 1
+      Target: {fileID: 11400000}

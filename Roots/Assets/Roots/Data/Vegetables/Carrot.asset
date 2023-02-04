@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12b1cd7e271c0a44cbabe2c74cf20dc2, type: 3}
   m_Name: Carrot
   m_EditorClassIdentifier: 
+  Id: 0
   VegetableData:
     GrowingTime: 5
     BaseValue: 3
@@ -20,6 +21,6 @@ MonoBehaviour:
     HarvestNumber: 3
     InitialStock: 2
     Icon: {fileID: 21300000, guid: be4f9d0ee7067dd458ed77fb1ef8fb44, type: 3}
-    Prefab: {fileID: 4115887125108576338, guid: 1dd4f76baded18740b286311c1395ca0,
+    Prefab: {fileID: -4061536978411445488, guid: 7e01a84674dce574bbc0c1c6b1f752d7,
       type: 3}
     VegetableAbilities: []

@@ -29,7 +29,7 @@ public class VegetableSystem
         
         if (vegetableDynamicData.Growth >= 1)
         {
-            gridSystem.HighlightCell(gridData.CellId, new Color(0, 1, 0, 0.3f));
+           // gridSystem.HighlightCell(gridData.CellId, new Color(0, 1, 0, 0.3f));
         }
     }
     

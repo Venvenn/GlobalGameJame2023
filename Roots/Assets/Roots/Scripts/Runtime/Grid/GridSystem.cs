@@ -5,11 +5,11 @@ using Unity.Mathematics;
 
 public class GridSystem
 {
-    private const string k_floorLayer = "Floor";
-
     private SquareGridComponent _gridComponent;
     private Camera _camera;
 
+    private GridObject[,] _gridObjectArray;
+    
     public Dictionary<int2,GridData> Entities;
     
     public int2 Size => _gridComponent.Size;
@@ -22,6 +22,16 @@ public class GridSystem
         _camera = camera;
         
         Entities = new Dictionary<int2, GridData>();
+        
+        _gridObjectArray = new GridObject[Size.x,Size.y];
+        for (int y = 0; y < Size.y; y++)
+        {
+            for (int x = 0; x < Size.x; x++)
+            {
+                _gridObjectArray[x, y] = Object.Instantiate(_gridComponent.GridObjectPrefab);
+                _gridObjectArray[x, y].transform.position = GetWorldPosition(new int2(x, y));
+            }
+        }
     }
 
     public void AddEntityToGrid(GridData data, int2 gridPos)
@@ -29,6 +39,7 @@ public class GridSystem
         if (CellValid(gridPos) && !HasEntity(gridPos))
         {
             Entities.Add(gridPos, data);
+            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(true);
         }
     }
     
@@ -38,6 +49,7 @@ public class GridSystem
         {
             Object.Destroy(Entities[gridPos].GridObject.gameObject);
             Entities.Remove(gridPos);
+            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(false);
         }
     }
 
