@@ -370,7 +370,7 @@ PrefabInstance:
     - target: {fileID: 7135384390769061201, guid: b65fc134cc2c1a846804ef4b049ef8ac,
         type: 3}
       propertyPath: _vegetableID
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8332819358713019168, guid: b65fc134cc2c1a846804ef4b049ef8ac,
         type: 3}
