@@ -26,6 +26,9 @@ public class FSGame : FlowState
         //Grid
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
         _gridSystem = new GridSystem(gridComponent, _camera);
+        
+        //Time
+        Time.timeScale = 1;
     }
 
     public override void OnInitialise()

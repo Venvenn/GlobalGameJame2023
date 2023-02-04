@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "TimeData", menuName = "Data/TimeData")]
 public class TimeSettings : ScriptableObject
@@ -7,6 +8,5 @@ public class TimeSettings : ScriptableObject
     public Month[] m_months;
 
     public int m_phaseOffset;
-
-    public Date m_startDate;
+    public Date _startDate;
 }

@@ -11,6 +11,9 @@ public class FSSystem : FlowState
         //UI
         m_uiManager = new UIManager("UI/UIScreens");
         m_gameStates = new FlowStateMachine(this);
+        
+        TimeSystem.Init(Resources.Load<TimeSettings>("Data/TimeData"));
+        Time.timeScale = 0;
     }
 
     public override void OnInitialise()
@@ -25,6 +28,7 @@ public class FSSystem : FlowState
     public override void ActiveUpdate()
     {
         m_gameStates.Update();
+        TimeSystem.UpdateTime();
     }
     
     public override void ActiveFixedUpdate()
