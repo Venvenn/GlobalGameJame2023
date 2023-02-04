@@ -33,11 +33,23 @@ public class FSGame : FlowState
     public override void ActiveUpdate()
     {
         _gameplayStates.Update();
-
+        RunEvents();
         //temp input 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Pause();
+        }
+    }
+
+    private void RunEvents()
+    {
+        if (GameEventSystem.DebtCollected())
+        {
+            //Pay Debt
+        }
+        if (GameEventSystem.MerchantArrive())
+        {
+            _gameplayStates.Push(new FSShop(_uiManager));
         }
     }
     
