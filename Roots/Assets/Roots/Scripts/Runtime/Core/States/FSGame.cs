@@ -63,16 +63,13 @@ public class FSGame : FlowState
             _selectedType = _selectedType == 0 ? 1 : 0;
         }
         
-        if (Input.GetKeyUp(KeyCode.Z))
+        if (Input.mouseScrollDelta.y > 0 && _cameraController.IsZoomOut)
         {
-            if (_cameraController.IsZoomOut)
-            {
-                FocusGridSpace(_hoverCell);
-            }
-            else
-            {
-                ZoomOut();
-            }
+            FocusGridSpace(_hoverCell);
+        }
+        else if (Input.mouseScrollDelta.y < 0 && !_cameraController.IsZoomOut)
+        {
+            ZoomOut();
         }
 
         //if you click a plot while zoomed in, focus it
@@ -80,9 +77,7 @@ public class FSGame : FlowState
         {
             FocusGridSpace(_hoverCell);
         }
-
-
-
+        
         if (Input.GetMouseButtonDown(0) && _selectedType != 0)
         {
             PlaceOnGrid();
