@@ -234,4 +234,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 8019041007195567339}
-  _speed: 500
+  _cameraSettings: {fileID: 11400000, guid: c695e0cf86d5ef644a5da26a72e42806, type: 2}
