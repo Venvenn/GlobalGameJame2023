@@ -11,4 +11,5 @@ public struct VegetableData
     public int HarvestNumber;
     public Sprite Icon;
     public VegetableObject Prefab;
+    public VegetableAbility[] VegetableAbilities;
 }

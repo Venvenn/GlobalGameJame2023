@@ -137,7 +137,7 @@ public class FSGarden : FlowState
             Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
         };
         _gridSystem.AddEntityToGrid(gridData,_hoverCell);
-        _gridSystem.SelectAndColourCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
+        _gridSystem.HighlightCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
     }
     
     public override void ActiveFixedUpdate()

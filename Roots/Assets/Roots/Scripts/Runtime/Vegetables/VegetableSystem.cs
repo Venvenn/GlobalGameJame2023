@@ -12,6 +12,11 @@ public class VegetableSystem
             UpdateGrowth(entity.Value, allVegetables.VegetableDataObjects[entity.Value.TypeId].VegetableData, gridSystem);
         }
     }
+
+    public void WeedSpawning()
+    {
+        
+    }
     
     private void UpdateGrowth(GridData gridData, VegetableData vegetableStaticData, GridSystem gridSystem)
     {
@@ -24,8 +29,9 @@ public class VegetableSystem
         
         if (vegetableDynamicData.Growth >= 1)
         {
-            gridSystem.DeselectCell(gridData.CellId);
-            gridSystem.SelectAndColourCell(gridData.CellId, new Color(0, 1, 0, 0.3f));
+            gridSystem.HighlightCell(gridData.CellId, new Color(0, 1, 0, 0.3f));
         }
     }
+    
+    
 }
