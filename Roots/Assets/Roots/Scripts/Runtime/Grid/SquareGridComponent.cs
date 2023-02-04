@@ -12,6 +12,7 @@ public class SquareGridComponent : MonoBehaviour
     
     private Grid _grid;
     private Dictionary<int2, Color> m_selectedCells;
+    private Dictionary<int2, Color> m_heilightedCells;
 
     public int2 Size => _gridSettings.Size;
 
@@ -19,6 +20,7 @@ public class SquareGridComponent : MonoBehaviour
     {
         _grid = GetComponent<Grid>();
         m_selectedCells = new Dictionary<int2, Color>();
+        m_heilightedCells = new Dictionary<int2, Color>();
     }
 
     public bool CellValid(int2 cellPos)
@@ -46,19 +48,17 @@ public class SquareGridComponent : MonoBehaviour
     {
         if (CellValid(cellPos))
         {
+            DeselectCell(cellPos);
             m_selectedCells.Add(cellPos, _gridSettings.SelectionColour);
         }
     }
     
-    public void SelectAndColourCell(int2 cellPos, Color colour)
+    public void HighlightCell(int2 cellPos, Color colour)
     {
         if (CellValid(cellPos))
         {
-            if (m_selectedCells.ContainsKey(cellPos))
-            {
-                DeselectCell(cellPos);
-            }
-            m_selectedCells.Add(cellPos, colour);
+            Unhighlight(cellPos);
+            m_heilightedCells.Add(cellPos, colour);
         }
     }
     
@@ -70,6 +70,14 @@ public class SquareGridComponent : MonoBehaviour
         }
     }
 
+    public void Unhighlight(int2 cellPos)
+    {
+        if (m_heilightedCells.ContainsKey(cellPos))
+        {
+            m_heilightedCells.Remove(cellPos);
+        }
+    }
+    
     public void ClearAllSelectedCells()
     {
         m_selectedCells.Clear();
@@ -100,6 +108,17 @@ public class SquareGridComponent : MonoBehaviour
         {
             int2 gridPos = selectedCell.Key;
             Draw.Color = selectedCell.Value;
+            Draw.Quad(
+                new Vector3(gridPos.x,k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,k_gridY,gridPos.y+1), 
+                new Vector3(gridPos.x,k_gridY,gridPos.y+1));
+        }
+        
+        foreach (KeyValuePair<int2 ,Color> highlightedCell in m_heilightedCells)
+        {
+            int2 gridPos = highlightedCell.Key;
+            Draw.Color = highlightedCell.Value;
             Draw.Quad(
                 new Vector3(gridPos.x,k_gridY,gridPos.y), 
                 new Vector3(gridPos.x+1,k_gridY,gridPos.y), 

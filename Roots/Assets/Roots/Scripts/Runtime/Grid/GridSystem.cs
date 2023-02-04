@@ -95,14 +95,19 @@ public class GridSystem
         _gridComponent.SelectCell(cellPos);
     }
     
-    public void SelectAndColourCell(int2 cellPos, Color colour)
+    public void HighlightCell(int2 cellPos, Color colour)
     {
-        _gridComponent.SelectAndColourCell(cellPos, colour);
+        _gridComponent.HighlightCell(cellPos, colour);
     }
     
     public void DeselectCell(int2 cellPos)
     {
         _gridComponent.DeselectCell(cellPos);
+    }
+    
+    public void Unhighlight(int2 cellPos)
+    {
+        _gridComponent.Unhighlight(cellPos);
     }
 
     public bool GetEntity(int2 gridPos, out GridData gridData)
