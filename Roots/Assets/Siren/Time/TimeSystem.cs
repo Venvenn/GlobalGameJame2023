@@ -11,9 +11,7 @@ public static class TimeSystem
 
     public static DayPhase DayPhase => (DayPhase) Mathf.FloorToInt(GetPhaseAdjustedTime01() * Enum.GetValues(typeof(DayPhase)).Length);
     public static Date Date { get; private set; }
-
-    public static TimeDate TimeDate => new TimeDate();
-
+    
     public static void Init(TimeSettings timeSettings)
     {
         s_timeSettings = timeSettings;
@@ -23,6 +21,23 @@ public static class TimeSystem
         s_gameTime = s_phaseOffsetValue * s_timeSettings.m_dayLength;
     }
 
+    public static TimeDate GetTimeDate()
+    {
+        var time = GameTime01;
+        var hours = Mathf.FloorToInt(time * 24);
+        var minutes = Mathf.RoundToInt((time * 24 - hours) * 60 * 100) / 100;
+        return new TimeDate(minutes, hours, Date.Day, Date.Month, Date.Year);
+    }
+
+    public static TimeSpan GetTimeSpan(TimeDate date1, TimeDate date2)
+    {
+        DateTime dateTime1 = new DateTime(date1.Year, date1.Month, date1.Day);
+        dateTime1 = dateTime1.Add(new TimeSpan(date1.Hours, date1.Minutes, 0));
+        DateTime dateTime2 = new DateTime(date2.Year, date2.Month, date2.Day);
+        dateTime2 = dateTime2.Add(new TimeSpan(date2.Hours, date2.Minutes, 0));
+        return dateTime2 - dateTime1;
+    }
+    
     public static void UpdateTime()
     {
         s_gameTime += Time.deltaTime;

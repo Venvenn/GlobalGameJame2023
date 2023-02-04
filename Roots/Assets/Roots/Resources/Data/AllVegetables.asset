@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f3aaf76614abc48a85ef4ea43c02c0, type: 3}
+  m_Name: AllVegetables
+  m_EditorClassIdentifier: 
+  VegetableDataObjects:
+  - {fileID: 11400000, guid: aa59f98805b93a34ebde412102ef863a, type: 2}
+  - {fileID: 11400000, guid: 9044ddeb72db5624fbab0383161efbed, type: 2}
+  - {fileID: 11400000, guid: 585ad50b4e85f2d4fb4d913316d2d57f, type: 2}
