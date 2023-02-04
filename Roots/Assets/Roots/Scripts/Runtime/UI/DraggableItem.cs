@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    [SerializeField] InventoryUI _inventoryUI;
     [SerializeField] private Image _iconImage;
     [SerializeField] private Image _cursorImage;
+    [SerializeField] private int _vegetableID;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -23,5 +25,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     public void OnEndDrag(PointerEventData eventData)
     {
         _cursorImage.gameObject.SetActive(false);
+        _inventoryUI.SendVegetableMessage(_vegetableID);
     }
 }
