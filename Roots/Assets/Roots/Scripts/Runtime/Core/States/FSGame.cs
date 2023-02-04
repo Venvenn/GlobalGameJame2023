@@ -7,13 +7,14 @@ public class FSGame : FlowState
     private GameUI _ui;
     private UIManager _uiManager;
     private FlowStateMachine _gameplayStates;
-
+    
+    
     public FSGame(UIManager uiManager)
     {
         //UI
         _uiManager = uiManager;
         _gameplayStates = new FlowStateMachine(this);
-
+        
         //Time
         Time.timeScale = 1;
     }
@@ -26,6 +27,7 @@ public class FSGame : FlowState
 
     public override void OnActive()
     {
+        
     }
 
     public override void ActiveUpdate()
@@ -38,7 +40,7 @@ public class FSGame : FlowState
             Pause();
         }
     }
-
+    
     public override void ActiveFixedUpdate()
     {
         _gameplayStates.FixedUpdate();

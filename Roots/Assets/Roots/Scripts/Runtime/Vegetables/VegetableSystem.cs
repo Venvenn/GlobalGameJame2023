@@ -19,7 +19,7 @@ public class VegetableSystem
         TimeDate now = TimeSystem.GetTimeDate();
         TimeSpan timeSpan = TimeSystem.GetTimeSpan(vegetableDynamicData.PlantTime, now);
         
-        vegetableDynamicData.Growth = (float)timeSpan.Days / vegetableStaticData.GrowingTime;
+        vegetableDynamicData.Growth = math.min(1, (float)timeSpan.Days / vegetableStaticData.GrowingTime);
         gridData.GridObject.transform.localScale = Vector3.one * vegetableDynamicData.Growth; 
         
         if (vegetableDynamicData.Growth >= 1)

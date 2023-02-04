@@ -13,6 +13,7 @@ public class FSGarden : FlowState
     
     private GridSystem _gridSystem;
     private VegetableSystem _vegetableSystem;
+    private CameraController _cameraController;
     
     //temp data
     private int _selectedType = -1;
@@ -25,6 +26,7 @@ public class FSGarden : FlowState
 
         //Camera
         _camera = Camera.main;
+        _cameraController = _camera.GetComponentInParent<CameraController>();
         
         //Systems
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
@@ -38,6 +40,7 @@ public class FSGarden : FlowState
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<GardenUI>("UI/Screens/GardenUI", this);
+        _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0,  _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
     }
 
     public override void OnActive()
@@ -72,6 +75,21 @@ public class FSGarden : FlowState
             _selectedType = 2;
         }
         
+        if (Input.mouseScrollDelta.y > 0 && _cameraController.IsZoomOut)
+        {
+            FocusGridSpace(_hoverCell);
+        }
+        else if (Input.mouseScrollDelta.y < 0 && !_cameraController.IsZoomOut)
+        {
+            ZoomOut();
+        }
+
+        //if you click a plot while zoomed in, focus it
+        if (Input.GetMouseButtonUp(0) && !_cameraController.IsZoomOut)
+        {
+            FocusGridSpace(_hoverCell);
+        }
+        
         if (Input.GetMouseButtonDown(0) && _selectedType != -1)
         {
             if (_gridSystem.CellValid(_hoverCell))
@@ -79,15 +97,37 @@ public class FSGarden : FlowState
                 PlaceOnGrid(_allVegetables.VegetableDataObjects[_selectedType].VegetableData);
             }
         }
+        
         if (Input.GetMouseButtonDown(1))
         {
             _gridSystem.RemoveEntityFromGrid(_hoverCell);
+        }
+        
+        
+    }
+    
+    private void FocusGridSpace(int2 selectedCell)
+    {
+        _cameraController.MoveTo(_gridSystem.GetWorldPosition(selectedCell));
+        if (_cameraController.IsZoomOut)
+        {
+            _cameraController.Zoom(_cameraController.CameraSettings.MinZoom);
+        }
+    }
+
+    private void ZoomOut()
+    {
+        _cameraController.MoveTo(new Vector3(_gridSystem.Size.x / 2f, 0, _gridSystem.Size.y / 2f));
+        if (!_cameraController.IsZoomOut)
+        {
+            _cameraController.Zoom(_cameraController.CameraSettings.MaxZoom);
         }
     }
 
     private void PlaceOnGrid(VegetableData vegetableData)
     {
         VegetableObject gameObject = Object.Instantiate(vegetableData.Prefab);
+        gameObject.transform.localScale = Vector3.zero;
         gameObject.transform.position = _gridSystem.GetWorldPosition(_hoverCell);
         GridData gridData = new GridData()
         {
