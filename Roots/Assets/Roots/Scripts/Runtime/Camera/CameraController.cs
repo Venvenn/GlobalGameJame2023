@@ -7,43 +7,26 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraSettings _cameraSettings;
 
+    public CameraSettings CameraSettings => _cameraSettings;
+
     private Coroutine _moveToRoutine;
     private Coroutine _zoomRoutine;
 
-    bool isZoomOut = true;
+    bool isZoomOut = false;
 
-    private void Start()
-    {
-        Zoom(_cameraSettings.MinZoom);
-    }
+    public bool IsZoomOut => isZoomOut;
 
-    private void Update()
+    public void SnapCamera(Vector3 targetWorldPos, float zoomDistance)
     {
-        //Move the camera to where you click
-        if (Input.GetMouseButtonUp(0))
+        transform.position = targetWorldPos;
+        _camera.transform.localPosition = -_camera.transform.forward * zoomDistance;
+        if (zoomDistance == _cameraSettings.MaxZoom)
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, 400))
-            {
-                MoveTo(hit.point);
-            }
+            isZoomOut = true;
         }
-
-        if (Input.GetMouseButtonUp(1))
+        else
         {
-            float zoom;
-            if (isZoomOut)
-            {
-                zoom = _cameraSettings.MinZoom;
-            }
-            else
-            {
-                zoom = _cameraSettings.MaxZoom;
-            }
-
-            isZoomOut = !isZoomOut;
-
-            Zoom(zoom);
+            isZoomOut = false;
         }
     }
 
@@ -78,6 +61,15 @@ public class CameraController : MonoBehaviour
         if (_zoomRoutine != null)
         {
             StopCoroutine(_zoomRoutine);
+        }
+
+        if (zoomDistance == _cameraSettings.MaxZoom)
+        {
+            isZoomOut = true;
+        }
+        else
+        {
+            isZoomOut = false;
         }
         _zoomRoutine = StartCoroutine(ZoomOutCoroutine(zoomDistance));
     }

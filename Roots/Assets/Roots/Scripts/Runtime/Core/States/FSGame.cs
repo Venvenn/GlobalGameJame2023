@@ -9,6 +9,7 @@ public class FSGame : FlowState
     private FlowStateMachine _gameplayStates;
     private GridSystem _gridSystem;
     private Camera _camera;
+    private CameraController _cameraController;
 
     //temp data
     private int _selectedType = 0;
@@ -22,6 +23,7 @@ public class FSGame : FlowState
         
         //Camera
         _camera = Camera.main;
+        _cameraController = _camera.GetComponentInParent<CameraController>();
         
         //Grid
         SquareGridComponent gridComponent = Object.Instantiate(Resources.Load<SquareGridComponent>("Prefabs/Grid"));
@@ -34,6 +36,7 @@ public class FSGame : FlowState
     public override void OnInitialise()
     {
         _ui = _uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
+        _cameraController.SnapCamera(new Vector3(_gridSystem.Size.x / 2f, 0,  _gridSystem.Size.y / 2f), _cameraController.CameraSettings.MaxZoom);
     }
 
     public override void OnActive()
@@ -60,6 +63,18 @@ public class FSGame : FlowState
             _selectedType = _selectedType == 0 ? 1 : 0;
         }
         
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            if (_cameraController.IsZoomOut)
+            {
+                FocusGridSpace(_hoverCell);
+            }
+            else
+            {
+                ZoomOut();
+            }
+        }
+
         if (Input.GetMouseButtonDown(0) && _selectedType != 0)
         {
             PlaceOnGrid();
@@ -68,6 +83,24 @@ public class FSGame : FlowState
         if (Input.GetMouseButtonDown(1))
         {
             _gridSystem.RemoveEntityFromGrid(_hoverCell);
+        }
+    }
+
+    private void FocusGridSpace(int2 selectedCell)
+    {
+        _cameraController.MoveTo(_gridSystem.GetWorldPosition(selectedCell));
+        if (_cameraController.IsZoomOut)
+        {
+            _cameraController.Zoom(_cameraController.CameraSettings.MinZoom);
+        }
+    }
+
+    private void ZoomOut()
+    {
+        _cameraController.MoveTo(new Vector3(_gridSystem.Size.x / 2f, 0, _gridSystem.Size.y / 2f));
+        if (!_cameraController.IsZoomOut)
+        {
+            _cameraController.Zoom(_cameraController.CameraSettings.MaxZoom);
         }
     }
 
