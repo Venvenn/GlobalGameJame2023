@@ -76,6 +76,20 @@ public class FSGarden : FlowState
         {
             _gridSystem.RemoveEntityFromGrid(_hoverCell);
         }
+
+        RunEvents();
+    }
+    
+    private void RunEvents()
+    {
+        if (GameEventSystem.DebtCollected())
+        {
+            //Pay Debt
+        }
+        if (GameEventSystem.MerchantArrive())
+        {
+            FlowStateMachine.Push(new FSShop(_uiManager));
+        }
     }
     
     private void FocusGridSpace(int2 selectedCell)
