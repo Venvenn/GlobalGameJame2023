@@ -6,24 +6,19 @@ using Unity.Mathematics;
 public class SquareGridComponent : MonoBehaviour
 {
     private const float k_gridY = 0.01f;
-    private const int k_selectedCellsMax = 1;
 
-    public int2 Size;
+    [SerializeField]
+    private GridSettings _gridSettings;
     
-    [SerializeField]
-    private Color _gridColour;
-    [SerializeField]
-    private Color _selectionColour;
-
     private Grid _grid;
-    private Camera _camera;
-    private List<int2> m_selectedCells;
+    private Dictionary<int2, Color> m_selectedCells;
+
+    public int2 Size => _gridSettings.Size;
 
     public void Init()
     {
         _grid = GetComponent<Grid>();
-        _camera = GetComponent<Camera>();
-        m_selectedCells = new List<int2>(k_selectedCellsMax);
+        m_selectedCells = new Dictionary<int2, Color>();
     }
 
     public bool CellValid(int2 cellPos)
@@ -51,13 +46,21 @@ public class SquareGridComponent : MonoBehaviour
     {
         if (CellValid(cellPos))
         {
-            m_selectedCells.Add(cellPos);
+            m_selectedCells.Add(cellPos, _gridSettings.SelectionColour);
+        }
+    }
+    
+    public void SelectAndColourCell(int2 cellPos, Color colour)
+    {
+        if (CellValid(cellPos))
+        {
+            m_selectedCells.Add(cellPos, colour);
         }
     }
     
     public void DeselectCell(int2 cellPos)
     {
-        if (m_selectedCells.Contains(cellPos))
+        if (m_selectedCells.ContainsKey(cellPos))
         {
             m_selectedCells.Remove(cellPos);
         }
@@ -74,7 +77,7 @@ public class SquareGridComponent : MonoBehaviour
         {
             for (int x = 0; x < Size.x; x++)
             {
-                Draw.Color = _gridColour;
+                Draw.Color = _gridSettings.GridColour;
                 Draw.Line(new Vector3(x, k_gridY,y), new Vector3(x+1,k_gridY,y));
                 Draw.Line(new Vector3(x, k_gridY, y), new Vector3(x,k_gridY, y+1));
                 
@@ -89,14 +92,15 @@ public class SquareGridComponent : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < m_selectedCells.Count; i++)
+        foreach (KeyValuePair<int2 ,Color> selectedCell in m_selectedCells)
         {
-            Draw.Color = _selectionColour;
+            int2 gridPos = selectedCell.Key;
+            Draw.Color = selectedCell.Value;
             Draw.Quad(
-                new Vector3(m_selectedCells[i].x,k_gridY,m_selectedCells[i].y), 
-                new Vector3(m_selectedCells[i].x+1,k_gridY,m_selectedCells[i].y), 
-                new Vector3(m_selectedCells[i].x+1,k_gridY,m_selectedCells[i].y+1), 
-                new Vector3(m_selectedCells[i].x,k_gridY,m_selectedCells[i].y+1));
+                new Vector3(gridPos.x,k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,k_gridY,gridPos.y), 
+                new Vector3(gridPos.x+1,k_gridY,gridPos.y+1), 
+                new Vector3(gridPos.x,k_gridY,gridPos.y+1));
         }
     }
 }

@@ -13,11 +13,9 @@ public class GameDirector : Director
 
     public override void OnUpdate()
     {
-        m_flowStateMachine.Update();
     }
 
     public override void OnFixedUpdate()
     {
-        m_flowStateMachine.FixedUpdate();
     }
 }
