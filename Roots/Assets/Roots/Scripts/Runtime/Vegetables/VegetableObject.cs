@@ -9,6 +9,8 @@ public class VegetableObject : MonoBehaviour
     private MMF_Player _feedbackPlayer;
     [SerializeField]
     private MMF_Player _killFeedbackPlayer;
+    [SerializeField]
+    private MMF_Player _damageFeedbackPlayer;
 
     [SerializeField]
     private GameObject _sparkleEffect;
@@ -23,6 +25,12 @@ public class VegetableObject : MonoBehaviour
     {
         _killFeedbackPlayer.Initialization();
         _killFeedbackPlayer.PlayFeedbacks();
+    }
+
+    public void Damage()
+    {
+        _damageFeedbackPlayer.Initialization();
+        _damageFeedbackPlayer.PlayFeedbacks();
     }
 
     public void FinishGrow()

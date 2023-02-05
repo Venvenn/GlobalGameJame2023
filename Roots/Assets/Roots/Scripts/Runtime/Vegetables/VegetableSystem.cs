@@ -45,6 +45,7 @@ public class VegetableSystem
                     if (weedNumber > 0)
                     {
                         entity.Value.Data.Health -= math.max(0, k_weedDamageAmount * weedNumber);
+                        entity.Value.GridObject.Damage();
                     }
                 }
 
