@@ -19,6 +19,9 @@ public class VegetableObject : MonoBehaviour
 
     public void FinishGrow()
     {
-        _sparkleEffect.SetActive(true);
+        if (_sparkleEffect != null)
+        {
+            _sparkleEffect.SetActive(true);
+        }
     }
 }
