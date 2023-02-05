@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class VegetableObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private MMF_Player _feedbackPlayer;
 
-    // Update is called once per frame
-    void Update()
+    public void Pull()
     {
-        
+        _feedbackPlayer.Initialization();
+        _feedbackPlayer.PlayFeedbacks();
     }
 }
