@@ -9,17 +9,19 @@ public class FSShop : FlowState
     private ShopUI _ui;
     private UIManager _uiManager;
     private AllVegetables _allVegetables;
+    private EconomyData _economyData;
 
     private List<VegetableDataObject> _vegetableData = new List<VegetableDataObject>();
     private VegetableStockData _stockData;
     
-    public FSShop(UIManager uiManager, VegetableStockData stockData)
+    public FSShop(UIManager uiManager, VegetableStockData stockData, EconomyData economyData)
     {
         //UI
         _uiManager = uiManager;
         Time.timeScale = 0;
         _allVegetables = Resources.Load<AllVegetables>("Data/AllVegetables");
         _stockData = stockData;
+        _economyData = economyData;
     }
 
     public override void OnInitialise()
@@ -63,13 +65,18 @@ public class FSShop : FlowState
             {
                 if (shopVegetableFlowMessage.Buy)
                 {
-                    _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]++;
+                    bool success = _economyData.Charge(shopVegetableFlowMessage.ValueChange);
+                    if (success)
+                    {
+                        _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]++;
+                    }
                 }
                 else
                 {
                     if (_stockData.VegetableStock[shopVegetableFlowMessage.VegetableType] > 0)
                     {
                         _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]--;
+                        _economyData.AddMoney(shopVegetableFlowMessage.ValueChange);
                     }
                 }
                 break;

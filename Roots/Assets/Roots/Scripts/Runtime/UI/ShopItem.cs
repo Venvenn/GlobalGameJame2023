@@ -32,6 +32,7 @@ public class ShopItem : MonoBehaviour
         for (int i = 0; i < shopVegetableFlowMessages.Length; i++)
         {
             shopVegetableFlowMessages[i].VegetableType = vegetableType;
+            shopVegetableFlowMessages[i].ValueChange =  shopVegetableFlowMessages[i].Buy ? buyAmount : sellAmount;
         }
     }
 }

@@ -81,7 +81,7 @@ public class FSGarden : FlowState
 
         if (Input.GetMouseButtonDown(1))
         {
-            _vegetableSystem.PluckVegetable(_hoverCell, _gridSystem, _vegetableStockData, _allVegetables);
+            _vegetableSystem.PluckVegetable(_hoverCell, _gridSystem, _vegetableStockData, _allVegetables, _economyData);
         }
 
         _ui.UpdateUI();        
@@ -148,7 +148,7 @@ public class FSGarden : FlowState
         else
         {
             //Merchant
-            FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData));   
+            FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData, _economyData));   
         }
     }
 

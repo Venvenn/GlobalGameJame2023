@@ -15,8 +15,12 @@ MonoBehaviour:
   Id: 3
   VegetableData:
     GrowingTime: 5
-    BaseValue: 2
-    SeedValue: 5
+    CropValue:
+      x: 2
+      y: 10
+    SeedValue:
+      x: 1
+      y: 5
     MaxHealth: 1
     HarvestNumber: 5
     InitialStock: 2
