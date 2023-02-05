@@ -129,7 +129,7 @@ public class VegetableSystem
         grid.RemoveEntityFromGrid(gridPos);
     }
     
-    public void PluckVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables)
+    public void PluckVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables, EconomyData economyData)
     {
         if (grid.GetEntity(gridPos, out GridData vegData))
         {
@@ -137,6 +137,10 @@ public class VegetableSystem
             if (typeId != -1)
             {
                 stockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * allVegetables.VegetableDataObjects[typeId].VegetableData.HarvestNumber);
+            }
+            else
+            {
+                economyData.AddMoney(1);
             }
         }
 

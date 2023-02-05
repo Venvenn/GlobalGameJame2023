@@ -32,7 +32,9 @@ public class ShopUI : FlowScreenUI
         for (int i = 0; i < vegetableData.Count; i++)
         {
             ShopItem shopItem = Instantiate(_shopItemPrefab, _shopTransform);
-            shopItem.Init(vegetableData[i].name, vegetableData[i].VegetableData.Icon, 0, 0, vegetableData[i].Id, _flowUIGroup);
+            int buyAmount = Random.Range(vegetableData[i].VegetableData.SeedValue.x, vegetableData[i].VegetableData.SeedValue.y);
+            int sellAmount = Random.Range(vegetableData[i].VegetableData.CropValue.x, vegetableData[i].VegetableData.CropValue.y);
+            shopItem.Init(vegetableData[i].name, vegetableData[i].VegetableData.Icon, buyAmount, sellAmount, vegetableData[i].Id, _flowUIGroup);
             _shopItems.Add(shopItem);
         }
     }
