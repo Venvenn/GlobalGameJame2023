@@ -20,7 +20,7 @@ MonoBehaviour:
     MaxHealth: 1
     HarvestNumber: 5
     InitialStock: 2
-    Icon: {fileID: 21300000, guid: a9b44ca3e0a1bc74fb351f615a6516c5, type: 3}
+    Icon: {fileID: 21300000, guid: c85bc6fcab848704faf129416ef0193b, type: 3}
     Prefab: {fileID: 7714339486572972556, guid: 0ee4c69fc5743c945bbb4cff0d6fbb69,
       type: 3}
     VegetableAbilities:
