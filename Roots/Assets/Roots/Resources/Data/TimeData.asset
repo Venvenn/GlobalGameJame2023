@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5395cca8e23644ba782f9793b05c4c, type: 3}
   m_Name: TimeData
   m_EditorClassIdentifier: 
-  m_dayLength: 0.25
+  m_dayLength: 5
   m_months:
   - Days: 31
     Name: 1
