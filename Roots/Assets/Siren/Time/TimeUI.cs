@@ -39,7 +39,7 @@ public class TimeUI : MonoBehaviour
         var dayText = TimeSystem.Date.Day.ToString("d2");
         var monthText = TimeSystem.Date.Month.ToString("d2");
         var yearText = TimeSystem.Date.Year.ToString("d2");
-        m_dateText.text = $"{dayText}/{monthText}/{yearText}";
+        m_dateText.text = $"{dayText}/{monthText}\n{yearText}";
 
         if (previousMonth == string.Empty)
         {
