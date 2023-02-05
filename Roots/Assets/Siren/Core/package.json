@@ -1,0 +1,10 @@
+{
+    "name": "com.siren.core",
+    "displayName": "Core",
+    "version": "0.1.1",
+    "unity": "2019.2",
+    "description": "Core basics of the Siren Framework",
+    "keywords": [ "siren","core" ],
+    "dependencies": {
+    }
+  }
