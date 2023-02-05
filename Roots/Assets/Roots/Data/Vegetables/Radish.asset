@@ -20,7 +20,7 @@ MonoBehaviour:
       y: 6
     SeedValue:
       x: 2
-      y: 4
+      y: 3
     MaxHealth: 1
     HarvestNumber: 5
     InitialStock: 2

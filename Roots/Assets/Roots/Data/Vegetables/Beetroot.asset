@@ -16,11 +16,11 @@ MonoBehaviour:
   VegetableData:
     GrowingTime: 5
     CropValue:
-      x: 2
-      y: 10
+      x: 7
+      y: 8
     SeedValue:
-      x: 1
-      y: 5
+      x: 3
+      y: 6
     MaxHealth: 1
     HarvestNumber: 5
     InitialStock: 2
