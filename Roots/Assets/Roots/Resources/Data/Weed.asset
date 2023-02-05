@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12b1cd7e271c0a44cbabe2c74cf20dc2, type: 3}
+  m_Name: Weed
+  m_EditorClassIdentifier: 
+  Id: -1
+  VegetableData:
+    GrowingTime: 1
+    BaseValue: 0
+    SeedValue: 0
+    MaxHealth: 1
+    HarvestNumber: 1
+    InitialStock: 0
+    Icon: {fileID: 21300000, guid: a7ad2e34e56ec3d47bc85769fd5da0f0, type: 3}
+    Prefab: {fileID: 6356169237672482486, guid: c661aba6caa35134090c106aded8ed27,
+      type: 3}
+    VegetableAbilities:
+    - AbilityType: 1
+      GridDistance:
+        x: 1
+        y: 1
+      Amount: 1
+      Frequency: 1
+      Target: {fileID: 11400000}
