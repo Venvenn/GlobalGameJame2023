@@ -1200,6 +1200,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 8019041007195567338, guid: 7b52e0258558e454fa95adfe116b347a,
+        type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8019041007195567339, guid: 7b52e0258558e454fa95adfe116b347a,
         type: 3}
       propertyPath: m_ClearFlags
