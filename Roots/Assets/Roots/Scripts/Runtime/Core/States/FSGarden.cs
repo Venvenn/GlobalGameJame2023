@@ -166,15 +166,17 @@ public class FSGarden : FlowState
     {
         if (!_economyData.MonthTick())
         {
-            //TODO: LOSE GAME
+            FlowStateMachine.Push(new FSEnd(_uiManager, false));
         }
         else if (_economyData.Debt <= 0)
         {
-            //TODO: WIN GAME
+            FlowStateMachine.Push(new FSEnd(_uiManager, true));
         }
-        
-        //Merchant
-        FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData));
+        else
+        {
+            //Merchant
+            FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData));   
+        }
     }
 
     public override void OnInactive()

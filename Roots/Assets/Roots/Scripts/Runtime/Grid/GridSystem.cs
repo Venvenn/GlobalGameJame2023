@@ -28,7 +28,7 @@ public class GridSystem
         {
             for (int x = 0; x < Size.x; x++)
             {
-                _gridObjectArray[x, y] = Object.Instantiate(_gridComponent.GridObjectPrefab);
+                _gridObjectArray[x, y] = Object.Instantiate(_gridComponent.GridObjectPrefab, gridComponent.transform);
                 _gridObjectArray[x, y].transform.position = GetWorldPosition(new int2(x, y));
             }
         }
@@ -40,6 +40,7 @@ public class GridSystem
         {
             Entities.Add(gridPos, data);
             _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(true);
+            data.GridObject.transform.SetParent(_gridComponent.transform);
         }
     }
     
