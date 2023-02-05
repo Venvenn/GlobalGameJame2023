@@ -16,7 +16,7 @@ public class FSGarden : FlowState
     private VegetableSystem _vegetableSystem;
     private CameraController _cameraController;
     private EconomyData _economyData;
-    
+
     //temp data
     private int _selectedType = -1;
     private int2 _hoverCell;
@@ -58,6 +58,7 @@ public class FSGarden : FlowState
     {
         //Vegetables
         _vegetableSystem.UpdateVegetables(_gridSystem, _allVegetables);
+        _vegetableSystem.WeedSpawning(_gridSystem);
 
         //Grid Highlight
         _gridSystem.DeselectCell(_hoverCell);
@@ -81,7 +82,7 @@ public class FSGarden : FlowState
 
         if (Input.GetMouseButtonDown(1))
         {
-            PluckVegetable(_hoverCell);
+            _vegetableSystem.PluckVegetable(_hoverCell, _gridSystem, _vegetableStockData, _allVegetables);
         }
 
         _ui.UpdateUI();        
@@ -112,36 +113,9 @@ public class FSGarden : FlowState
     {
         if (_gridSystem.CellValid(_hoverCell) && !_gridSystem.HasEntity(_hoverCell) && vegetableData.Prefab != null && _vegetableStockData.VegetableStock[_selectedType] > 0)
         {
-            PlaceOnGrid(vegetableData);
+            _vegetableSystem.PlaceOnGrid(_selectedType, vegetableData, _gridSystem, _hoverCell);
             _vegetableStockData.VegetableStock[_selectedType]--;
         }
-    }
-
-    private void PluckVegetable(int2 grid)
-    {
-        GridData vegData = new GridData();
-        if (_gridSystem.GetEntity(grid, out vegData))
-        {
-            _vegetableStockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * _allVegetables.VegetableDataObjects[vegData.TypeId].VegetableData.HarvestNumber);
-            _gridSystem.RemoveEntityFromGrid(grid);
-            //_gridSystem.Unhighlight(grid);
-        }
-    }
-
-    private void PlaceOnGrid(VegetableData vegetableData)
-    {
-        VegetableObject gameObject = Object.Instantiate(vegetableData.Prefab);
-        gameObject.transform.localScale = Vector3.zero;
-        gameObject.transform.position = _gridSystem.GetWorldPosition(_hoverCell);
-        GridData gridData = new GridData()
-        {
-            TypeId = _selectedType,
-            CellId = _hoverCell,
-            GridObject = gameObject,
-            Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
-        };
-        _gridSystem.AddEntityToGrid(gridData, _hoverCell);
-        //_gridSystem.HighlightCell(_hoverCell, new Color(0.4f, 0.2f, 0.1f, 0.3f));
     }
 
     public override void ActiveFixedUpdate()
