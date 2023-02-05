@@ -10,6 +10,12 @@ public class GridObject : MonoBehaviour
     [SerializeField]
     private MMF_Player _player;
 
+
+    private void Start()
+    {
+        _player.Initialization();
+    }
+
     public void SetOccupied(bool occupied)
     {
         _unoccupied.SetActive(!occupied);

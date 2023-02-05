@@ -8,26 +8,26 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
 {
     [SerializeField] InventoryUI _inventoryUI;
     [SerializeField] private Image _iconImage;
-    [SerializeField] private Image _cursorImage;
     [SerializeField] private int _vegetableID;
+    [SerializeField] private GameObject _cursor;
     [SerializeField] private TMPro.TextMeshProUGUI _stockCount;
 
     public int VegetableID => _vegetableID;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        _cursorImage.sprite = _iconImage.sprite;
-        _cursorImage.gameObject.SetActive(true);
+        _cursor.SetActive(true);
+        _inventoryUI.UpdateCursor(VegetableID);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _cursorImage.transform.position = eventData.position;
+        _cursor.transform.position = eventData.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        _cursorImage.gameObject.SetActive(false);
+        _cursor.SetActive(false);
         _inventoryUI.SendVegetableMessage(_vegetableID);
     }
 

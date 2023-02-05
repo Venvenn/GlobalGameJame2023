@@ -32,6 +32,7 @@ public class FSGame : FlowState
         _ui = _uiManager.LoadUIScreen<GameUI>("UI/Screens/GameUI", this);
         _ui._vegetableStockData = _vegetableStockData;
         _ui._economyData = _economyData;
+        _ui.InitUI();
         _gameplayStates.Push(new FSGarden(_uiManager, _vegetableStockData, _economyData));
     }
 
@@ -109,6 +110,7 @@ public class FSGame : FlowState
 
     public override void FinishDismiss()
     {
+        _ui.DestroyUI();
         Object.Destroy(_ui.gameObject);
     }
 }

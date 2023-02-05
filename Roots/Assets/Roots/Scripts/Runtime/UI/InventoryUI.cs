@@ -7,6 +7,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private PlaceVegetableFlowMessage _placeVegetableFlowMessage;
     [SerializeField] private FlowUIGroup _flowUIGroup;
     [SerializeField] private DraggableItem[] _inventoryItems;
+    [SerializeField] private GameObject[] _seedCursors;
 
     public void SendVegetableMessage(int vegetableId)
     {
@@ -19,6 +20,18 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < _inventoryItems.Length; i++)
         {
             _inventoryItems[i].SetStock(itemStocks[_inventoryItems[i].VegetableID]);
+        }
+    }
+
+    public void UpdateCursor(int vegetableID)
+    {
+        for (int i = 0; i < _seedCursors.Length; i++)
+        {
+            _seedCursors[i].gameObject.SetActive(false);
+            if (i == vegetableID)
+            {
+                _seedCursors[i].gameObject.SetActive(true);
+            }
         }
     }
 }
