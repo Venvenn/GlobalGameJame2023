@@ -18,7 +18,7 @@ public class GameUI : FlowScreenUI
 
     public override void UpdateUI()
     {
-        _inventoryUI.UpdateStockCounts(_vegetableStockData.VegetableStock);
+        _inventoryUI.UpdateStockCounts(_vegetableStockData.VegetableCropStock, _vegetableStockData.VegetableSeedStock);
         _economyUI.UpdateBalance(_economyData.Debt, _economyData.Balance);
     }
 

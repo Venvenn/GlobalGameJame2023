@@ -24,6 +24,9 @@ MonoBehaviour:
     MaxHealth: 1
     HarvestNumber: 5
     InitialStock: 2
+    seedDropRange:
+      x: 0
+      y: 3
     Icon: {fileID: 21300000, guid: bfcd81e4a7f1ee9479e0a3513626cb54, type: 3}
     Prefab: {fileID: 6476787792508222928, guid: fbc02dd4b58ac2541a334997b7cb2866,
       type: 3}

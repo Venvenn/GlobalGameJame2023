@@ -44,7 +44,7 @@ public class GridSystem
         }
     }
     
-    public void RemoveEntityFromGrid(int2 gridPos, bool kill = false)
+    public void RemoveEntityFromGrid(int2 gridPos, int seedsNumber, int cropsNumber, string cropName, bool kill = false, bool disableMessage = false)
     {
         if (CellValid(gridPos) && HasEntity(gridPos))
         {
@@ -54,7 +54,7 @@ public class GridSystem
             }
             else
             {
-                Entities[gridPos].GridObject.Pull();
+                Entities[gridPos].GridObject.Pull( cropsNumber, seedsNumber, cropName, disableMessage);
             }
 
             Entities.Remove(gridPos);

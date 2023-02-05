@@ -15,11 +15,11 @@ public class InventoryUI : MonoBehaviour
         _flowUIGroup.SendMessage(_placeVegetableFlowMessage);
     }
 
-    public void UpdateStockCounts(List<int> itemStocks)
+    public void UpdateStockCounts(List<int> cropStocks, List<int> seedStocks)
     {
         for (int i = 0; i < _inventoryItems.Length; i++)
         {
-            _inventoryItems[i].SetStock(itemStocks[_inventoryItems[i].VegetableID]);
+            _inventoryItems[i].SetStock(seedStocks[_inventoryItems[i].VegetableID], cropStocks[_inventoryItems[i].VegetableID]);
         }
     }
 

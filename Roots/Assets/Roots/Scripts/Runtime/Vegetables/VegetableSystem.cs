@@ -63,7 +63,7 @@ public class VegetableSystem
         //Kill Dead Vegetables
         foreach (var tile in dead)
         {
-            gridSystem.RemoveEntityFromGrid(tile, true);
+            gridSystem.RemoveEntityFromGrid(tile, 0,0,"",true);
         }
     }
 
@@ -115,36 +115,28 @@ public class VegetableSystem
         };
         grid.AddEntityToGrid(gridData, gridCell);
     }
-    
-    public void KillVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables)
-    {
-        if (grid.GetEntity(gridPos, out GridData vegData))
-        {
-            int typeId = vegData.TypeId;
-            if (typeId != -1)
-            {
-                stockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * allVegetables.VegetableDataObjects[typeId].VegetableData.HarvestNumber);
-            }
-        }
 
-        grid.RemoveEntityFromGrid(gridPos);
-    }
-    
     public void PluckVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables, EconomyData economyData)
     {
+        
         if (grid.GetEntity(gridPos, out GridData vegData))
         {
             int typeId = vegData.TypeId;
             if (typeId != -1)
             {
-                stockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * allVegetables.VegetableDataObjects[typeId].VegetableData.HarvestNumber);
+                int cropNumber = (int)(vegData.Data.GetYield() * allVegetables.VegetableDataObjects[typeId].VegetableData.HarvestNumber);
+                int seedsNumber = UnityEngine.Random.Range(allVegetables.VegetableDataObjects[typeId].VegetableData.seedDropRange.x, allVegetables.VegetableDataObjects[typeId].VegetableData.seedDropRange.y);
+                stockData.VegetableCropStock[vegData.TypeId] +=cropNumber;
+                stockData.VegetableSeedStock[vegData.TypeId] +=seedsNumber;
+                grid.RemoveEntityFromGrid(gridPos,seedsNumber,cropNumber,allVegetables.VegetableDataObjects[typeId].name);
             }
             else
             {
                 economyData.AddMoney(1);
+                grid.RemoveEntityFromGrid(gridPos,0,0,"", false, true);
             }
         }
 
-        grid.RemoveEntityFromGrid(gridPos);
+   
     }
 }
