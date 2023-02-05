@@ -110,10 +110,10 @@ public class FSGarden : FlowState
 
     private void TryPlaceOnGrid(VegetableData vegetableData)
     {
-        if (_gridSystem.CellValid(_hoverCell) && !_gridSystem.HasEntity(_hoverCell) && vegetableData.Prefab != null && _vegetableStockData.VegetableStock[_selectedType] > 0)
+        if (_gridSystem.CellValid(_hoverCell) && !_gridSystem.HasEntity(_hoverCell) && vegetableData.Prefab != null && _vegetableStockData.VegetableSeedStock[_selectedType] > 0)
         {
             _vegetableSystem.PlaceOnGrid(_selectedType, vegetableData, _gridSystem, _hoverCell);
-            _vegetableStockData.VegetableStock[_selectedType]--;
+            _vegetableStockData.VegetableSeedStock[_selectedType]--;
         }
     }
 

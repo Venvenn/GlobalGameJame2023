@@ -68,14 +68,14 @@ public class FSShop : FlowState
                     bool success = _economyData.Charge(shopVegetableFlowMessage.ValueChange);
                     if (success)
                     {
-                        _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]++;
+                        _stockData.VegetableSeedStock[shopVegetableFlowMessage.VegetableType]++;
                     }
                 }
                 else
                 {
-                    if (_stockData.VegetableStock[shopVegetableFlowMessage.VegetableType] > 0)
+                    if (_stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType] > 0)
                     {
-                        _stockData.VegetableStock[shopVegetableFlowMessage.VegetableType]--;
+                        _stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType]--;
                         _economyData.AddMoney(shopVegetableFlowMessage.ValueChange);
                     }
                 }

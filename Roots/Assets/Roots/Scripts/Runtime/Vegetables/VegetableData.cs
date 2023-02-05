@@ -11,6 +11,7 @@ public struct VegetableData
     public int MaxHealth;
     public int HarvestNumber;
     public int InitialStock;
+    public int2 seedDropRange;
     public Sprite Icon;
     public VegetableObject Prefab;
     public VegetableAbility[] VegetableAbilities;

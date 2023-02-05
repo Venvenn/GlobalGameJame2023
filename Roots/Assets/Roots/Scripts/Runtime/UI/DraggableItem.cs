@@ -10,7 +10,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
     [SerializeField] private Image _iconImage;
     [SerializeField] private int _vegetableID;
     [SerializeField] private GameObject _cursor;
-    [SerializeField] private TMPro.TextMeshProUGUI _stockCount;
+    [SerializeField] private TMPro.TextMeshProUGUI _stockSeedCount;
+    [SerializeField] private TMPro.TextMeshProUGUI _stockCropCount;
 
     public int VegetableID => _vegetableID;
 
@@ -31,8 +32,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IEndDragHandler, 
         _inventoryUI.SendVegetableMessage(_vegetableID);
     }
 
-    public void SetStock(int amount)
+    public void SetStock(int seedAmount, int cropAmount)
     {
-        _stockCount.text = amount.ToString();
+        _stockSeedCount.text = seedAmount.ToString();
+        _stockCropCount.text = cropAmount.ToString();
     }
 }
