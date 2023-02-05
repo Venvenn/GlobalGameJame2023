@@ -39,7 +39,7 @@ public class GridSystem
         if (CellValid(gridPos) && !HasEntity(gridPos))
         {
             Entities.Add(gridPos, data);
-            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(true);
+            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(true, data.TypeId);
             data.GridObject.transform.SetParent(_gridComponent.transform);
         }
     }
@@ -50,7 +50,7 @@ public class GridSystem
         {
             Entities[gridPos].GridObject.Pull();
             Entities.Remove(gridPos);
-            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(false);
+            _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(false, 0);
         }
     }
 
