@@ -6,7 +6,7 @@ using Random = Unity.Mathematics.Random;
 
 public class VegetableSystem
 {
-    private const float k_weedSpawnRate = 420;
+    private const float k_weedSpawnRate = 840;
 
     public TimeDate _lastWeedTime;
     private Random _random;
