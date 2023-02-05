@@ -44,11 +44,19 @@ public class GridSystem
         }
     }
     
-    public void RemoveEntityFromGrid(int2 gridPos)
+    public void RemoveEntityFromGrid(int2 gridPos, bool kill = false)
     {
         if (CellValid(gridPos) && HasEntity(gridPos))
         {
-            Entities[gridPos].GridObject.Pull();
+            if (kill)
+            {
+                Entities[gridPos].GridObject.Kill();
+            }
+            else
+            {
+                Entities[gridPos].GridObject.Pull();
+            }
+
             Entities.Remove(gridPos);
             _gridObjectArray[gridPos.x, gridPos.y].SetOccupied(false, 0);
         }
@@ -135,9 +143,11 @@ public class GridSystem
         return false;
     }
 
-    public bool[] CheckAdjacent(int2 gridCell, int2 distance, params int[] typesToLookFor)
+    public int[] CheckAdjacent(int2 gridCell, int2 distance, params int[] typesToLookFor)
     {
-        bool[] results = new bool[typesToLookFor.Length];
+        //count the number of each type adjacent
+        int[] results = new int[typesToLookFor.Length];
+        
         for (int y = gridCell.y - distance.y; y < gridCell.y + distance.y; y++)
         {
             for (int x = gridCell.x - distance.x; x < gridCell.x + distance.x; x++)
@@ -149,7 +159,7 @@ public class GridSystem
                     {
                         if (typesToLookFor[i] == gridData.TypeId)
                         {
-                            results[i] = true;
+                            results[i]++;
                         }
                     }
                 }

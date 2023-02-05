@@ -7,31 +7,62 @@ using Random = Unity.Mathematics.Random;
 public class VegetableSystem
 {
     private const float k_weedSpawnRate = 840;
+    private const float k_weedDamageAmount = 0.2f;
 
     public TimeDate _lastWeedTime;
+    public TimeDate _lastWeedDamageTime;
+    
     private Random _random;
     private VegetableDataObject _weedData;
 
     public VegetableSystem()
     {
         _lastWeedTime = TimeSystem.GetTimeDate();
+        _lastWeedDamageTime = _lastWeedTime;
+        
         _random = new Random((uint)UnityEngine.Random.Range(int.MinValue, int.MaxValue));
         _weedData = Resources.Load<VegetableDataObject>("Data/Weed");
     }
     
     public void UpdateVegetables(GridSystem gridSystem, AllVegetables allVegetables)
     {
+        TimeDate now = TimeSystem.GetTimeDate();
+        TimeSpan timeSpan = TimeSystem.GetTimeSpan(_lastWeedDamageTime, now);
+
+        List<int2> dead = new List<int2>();
         foreach (KeyValuePair<int2,GridData> entity in gridSystem.Entities)
         {
             int typeId = entity.Value.TypeId;
             if (typeId != -1)
             {
                 UpdateGrowth(entity.Value, allVegetables.VegetableDataObjects[entity.Value.TypeId].VegetableData, gridSystem);
+                
+                //Weed Damage
+                if (timeSpan.TotalDays > 1)
+                {
+                    int weedNumber = gridSystem.CheckAdjacent(entity.Key, 1, -1)[0];
+                    _lastWeedDamageTime = now;
+                    if (weedNumber > 0)
+                    {
+                        entity.Value.Data.Health -= math.max(0, k_weedDamageAmount * weedNumber);
+                    }
+                }
+
+                if (entity.Value.Data.Health < 0 || Mathf.Approximately(entity.Value.Data.Health,0f))
+                {
+                    dead.Add(entity.Key);
+                }
             }
             else
             {
                 UpdateGrowth(entity.Value, _weedData.VegetableData, gridSystem);
             }
+        }
+        
+        //Kill Dead Vegetables
+        foreach (var tile in dead)
+        {
+            gridSystem.RemoveEntityFromGrid(tile, true);
         }
     }
 
@@ -82,6 +113,20 @@ public class VegetableSystem
             Data = new VegetableStateData(0, vegetableData.MaxHealth, 1, TimeSystem.GetTimeDate())
         };
         grid.AddEntityToGrid(gridData, gridCell);
+    }
+    
+    public void KillVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables)
+    {
+        if (grid.GetEntity(gridPos, out GridData vegData))
+        {
+            int typeId = vegData.TypeId;
+            if (typeId != -1)
+            {
+                stockData.VegetableStock[vegData.TypeId] += (int)(vegData.Data.GetYield() * allVegetables.VegetableDataObjects[typeId].VegetableData.HarvestNumber);
+            }
+        }
+
+        grid.RemoveEntityFromGrid(gridPos);
     }
     
     public void PluckVegetable(int2 gridPos, GridSystem grid, VegetableStockData stockData, AllVegetables allVegetables)
