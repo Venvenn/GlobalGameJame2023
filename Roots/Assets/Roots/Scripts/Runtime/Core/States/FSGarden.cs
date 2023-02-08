@@ -137,19 +137,8 @@ public class FSGarden : FlowState
 
     private void OnNewMonth()
     {
-        if (!_economyData.MonthTick())
-        {
-            FlowStateMachine.Push(new FSEnd(_uiManager, false));
-        }
-        else if (_economyData.Debt <= 0)
-        {
-            FlowStateMachine.Push(new FSEnd(_uiManager, true));
-        }
-        else
-        {
-            //Merchant
-            FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData, _economyData));   
-        }
+        //Merchant
+        FlowStateMachine.Push(new FSShop(_uiManager, _vegetableStockData, _economyData));
     }
 
     public override void OnInactive()

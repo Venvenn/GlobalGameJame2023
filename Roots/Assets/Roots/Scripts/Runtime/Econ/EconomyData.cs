@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class EconomyData
@@ -25,8 +26,8 @@ public class EconomyData
     /// <returns></returns>
     public bool MonthTick()
     {
-        _balance -= _minimumPayment;
-        _debt -= _minimumPayment;
+        Charge(_minimumPayment);
+        PayDebt(_minimumPayment);
 
         if (_balance < 0)
         {
@@ -54,5 +55,10 @@ public class EconomyData
     public void AddMoney(int payment)
     {
         _balance += payment;
+    }
+    
+    public void PayDebt(int payment)
+    {
+        _debt = math.max(0, _debt - payment);
     }
 }

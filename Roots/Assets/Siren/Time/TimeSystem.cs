@@ -49,8 +49,7 @@ public static class TimeSystem
             Date.Day++;
 
             //update month
-            if (Date.Day > s_timeSettings.m_months[Date.Month - 1].Days +
-                (Date.Month == 2 ? s_leapYearBonus : 0))
+            if (Date.Day > s_timeSettings.m_months[Date.Month - 1].Days + (Date.Month == 2 ? s_leapYearBonus : 0))
             {
                 Date.Day = 1;
                 Date.Month++;

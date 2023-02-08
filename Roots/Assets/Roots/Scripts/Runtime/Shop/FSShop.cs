@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Siren;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FSShop : FlowState
 {
@@ -59,24 +61,49 @@ public class FSShop : FlowState
             case "finish":
             {
                 FlowStateMachine.Pop();
+                
+                if (!_economyData.MonthTick())
+                {
+                    FlowStateMachine.Push(new FSEnd(_uiManager, false));
+                }
+                else if (_economyData.Debt <= 0)
+                {
+                    FlowStateMachine.Push(new FSEnd(_uiManager, true));
+                }
+                break;
+            }
+            case "pay":
+            {
+                int money = math.min(_economyData.Balance, 100);
+                _economyData.Charge(money);
+                _economyData.PayDebt(money);
+                if (_economyData.Debt <= 0)
+                {
+                    FlowStateMachine.Push(new FSEnd(_uiManager, true));
+                }
                 break;
             }
             case ShopVegetableFlowMessage shopVegetableFlowMessage:
             {
                 if (shopVegetableFlowMessage.Buy)
                 {
-                    bool success = _economyData.Charge(shopVegetableFlowMessage.ValueChange);
+                    bool success = _economyData.Charge(shopVegetableFlowMessage.ValueChange * shopVegetableFlowMessage.Quantity);
                     if (success)
                     {
-                        _stockData.VegetableSeedStock[shopVegetableFlowMessage.VegetableType]++;
+                        _stockData.VegetableSeedStock[shopVegetableFlowMessage.VegetableType] += shopVegetableFlowMessage.Quantity;
                     }
                 }
                 else
                 {
-                    if (_stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType] > 0)
+                    int quantity = shopVegetableFlowMessage.Quantity;
+                    if (shopVegetableFlowMessage.All)
                     {
-                        _stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType]--;
-                        _economyData.AddMoney(shopVegetableFlowMessage.ValueChange);
+                        quantity = _stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType];
+                    }
+                    if (_stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType] >= quantity)
+                    {
+                        _stockData.VegetableCropStock[shopVegetableFlowMessage.VegetableType] -= quantity;
+                        _economyData.AddMoney(shopVegetableFlowMessage.ValueChange * quantity);
                     }
                 }
                 break;

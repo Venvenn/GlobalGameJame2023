@@ -148,9 +148,9 @@ public class GridSystem
         //count the number of each type adjacent
         int[] results = new int[typesToLookFor.Length];
         
-        for (int y = gridCell.y - distance.y; y < gridCell.y + distance.y; y++)
+        for (int y = gridCell.y - distance.y; y <= gridCell.y + distance.y; y++)
         {
-            for (int x = gridCell.x - distance.x; x < gridCell.x + distance.x; x++)
+            for (int x = gridCell.x - distance.x; x <= gridCell.x + distance.x; x++)
             {
                 int2 checkCell = new int2(x, y);
                 if (CellValid(checkCell) && GetEntity(checkCell, out GridData gridData))

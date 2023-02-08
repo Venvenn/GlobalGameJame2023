@@ -7,7 +7,11 @@ public class ShopVegetableFlowMessage : FlowMessage
     public int VegetableType;
     [HideInInspector]
     public int ValueChange;
+    
+    public int Quantity;
     public bool Buy;
+    public bool All;
+    
     public override object GetMessage()
     {
         return this;
