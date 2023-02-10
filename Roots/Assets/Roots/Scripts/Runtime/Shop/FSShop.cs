@@ -74,12 +74,17 @@ public class FSShop : FlowState
             }
             case "pay":
             {
-                int money = math.min(_economyData.Balance, 100);
-                _economyData.Charge(money);
-                _economyData.PayDebt(money);
-                if (_economyData.Debt <= 0)
+                int money = 100;
+                if (_economyData.Balance >= money)
                 {
-                    FlowStateMachine.Push(new FSEnd(_uiManager, true));
+                    if (_economyData.Charge(money))
+                    {
+                        _economyData.PayDebt(money);
+                        if (_economyData.Debt <= 0)
+                        {
+                            FlowStateMachine.Push(new FSEnd(_uiManager, true));
+                        }
+                    }
                 }
                 break;
             }

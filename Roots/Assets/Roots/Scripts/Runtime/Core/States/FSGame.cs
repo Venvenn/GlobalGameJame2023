@@ -112,5 +112,6 @@ public class FSGame : FlowState
     {
         _ui.DestroyUI();
         Object.Destroy(_ui.gameObject);
+        TimeSystem.Init(Resources.Load<TimeSettings>("Data/TimeData"));
     }
 }

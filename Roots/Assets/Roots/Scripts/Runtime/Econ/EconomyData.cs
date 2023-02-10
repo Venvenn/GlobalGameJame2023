@@ -26,7 +26,7 @@ public class EconomyData
     /// <returns></returns>
     public bool MonthTick()
     {
-        Charge(_minimumPayment);
+        _balance -= _minimumPayment;
         PayDebt(_minimumPayment);
 
         if (_balance < 0)
@@ -41,7 +41,7 @@ public class EconomyData
 
     public bool Charge(int payment)
     {
-        if (_balance > payment)
+        if (_balance >= payment)
         {
             _balance -= payment;
             return true;

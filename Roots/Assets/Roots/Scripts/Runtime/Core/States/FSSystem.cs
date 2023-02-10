@@ -12,6 +12,7 @@ public class FSSystem : FlowState
         m_uiManager = new UIManager("UI/UIScreens");
         m_gameStates = new FlowStateMachine(this);
         
+        //Time
         TimeSystem.Init(Resources.Load<TimeSettings>("Data/TimeData"));
         Time.timeScale = 0;
     }
